@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36109.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolioSystem.Domain", "FinancialPortfolioSystem.Domain.csproj", "{15E21F2B-C164-4572-B221-137C95304EC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolioSystem.Application", "..\FinancialPortfolioSystem.Application\FinancialPortfolioSystem.Application.csproj", "{F5D366ED-C08A-45E2-82C4-C5324644DB3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{15E21F2B-C164-4572-B221-137C95304EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15E21F2B-C164-4572-B221-137C95304EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15E21F2B-C164-4572-B221-137C95304EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15E21F2B-C164-4572-B221-137C95304EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99C9933F-D10A-4481-8A1F-CC39193DFBDC}
+	EndGlobalSection
+EndGlobal
