@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolioSystem.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolioSystem.Application", "..\FinancialPortfolioSystem.Application\FinancialPortfolioSystem.Application.csproj", "{F5D366ED-C08A-45E2-82C4-C5324644DB3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinancialPortfolioSystem.Infrastructure", "..\FinancialPortfolioSystem.Infrastructure\FinancialPortfolioSystem.Infrastructure.csproj", "{36169941-FE8A-4F01-B7CE-53F1C98AB455}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D366ED-C08A-45E2-82C4-C5324644DB3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36169941-FE8A-4F01-B7CE-53F1C98AB455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36169941-FE8A-4F01-B7CE-53F1C98AB455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36169941-FE8A-4F01-B7CE-53F1C98AB455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36169941-FE8A-4F01-B7CE-53F1C98AB455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
