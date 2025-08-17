@@ -1,10 +1,4 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
-using FinancialPortfolioSystem.Domain.Models.Assets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
 {

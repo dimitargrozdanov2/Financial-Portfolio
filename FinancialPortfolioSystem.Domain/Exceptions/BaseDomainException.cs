@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FinancialPortfolioSystem.Domain.Exceptions
+﻿namespace FinancialPortfolioSystem.Domain.Exceptions
 {
     public abstract class BaseDomainException : Exception
     {

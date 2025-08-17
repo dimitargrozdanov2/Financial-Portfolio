@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FinancialPortfolioSystem.Domain.Models
+﻿namespace FinancialPortfolioSystem.Domain.Models
 {
     public class ModelConstants
     {

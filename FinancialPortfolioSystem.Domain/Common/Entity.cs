@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FinancialPortfolioSystem.Domain.Common
+﻿namespace FinancialPortfolioSystem.Domain.Common
 {
     public abstract class Entity<TId>
             where TId : struct

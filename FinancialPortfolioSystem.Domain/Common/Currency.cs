@@ -1,9 +1,4 @@
 ﻿using FinancialPortfolioSystem.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
 namespace FinancialPortfolioSystem.Domain.Common

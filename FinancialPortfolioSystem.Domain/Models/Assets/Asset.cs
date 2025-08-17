@@ -1,10 +1,5 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Asset;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
