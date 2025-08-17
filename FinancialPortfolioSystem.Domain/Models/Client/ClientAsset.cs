@@ -12,7 +12,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
 {
     public class ClientAsset : ValueObject
     {
-        internal ClientAsset(Guid assetId, int quantity, decimal totalAmountPaid)
+        internal ClientAsset(Guid assetId, int quantity, Currency totalAmountPaid)
         {
             Validate(quantity, totalAmountPaid);
 
@@ -23,21 +23,15 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
 
         public Guid AssetId { get; }
         public int Quantity { get; private set; }
-        public decimal TotalAmountPaid { get; private set; }
+        public Currency TotalAmountPaid { get; private set; }
 
-        private void Validate(int quantity, decimal totalAmountPaid)
+        private void Validate(int quantity, Currency totalAmountPaid)
         {
             Guard.AgainstOutOfRange<InvalidClientAssetException>(
                 quantity,
                 Zero,
                 int.MaxValue,
                 nameof(this.Quantity));
-
-            Guard.AgainstOutOfRange<InvalidClientAssetException>(
-                totalAmountPaid,
-                Zero,
-                decimal.MaxValue,
-                nameof(this.TotalAmountPaid));
         }
 
         internal void ApplyTransaction(ClientTransaction transaction)
@@ -45,12 +39,12 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             if (transaction.Type.Equals(ClientTransactionType.Buy))
             {
                 Quantity += transaction.Quantity; //test to see if transaction parameters are populated
-                TotalAmountPaid += transaction.Quantity * transaction.PricePerUnit;
+                TotalAmountPaid.IncreaseBy(transaction.Quantity * transaction.PricePerUnit);
             }
             else if (transaction.Type.Equals(ClientTransactionType.Sell))
             {
                 Quantity -= transaction.Quantity;
-                TotalAmountPaid -= transaction.Quantity * (TotalAmountPaid / Quantity);
+                TotalAmountPaid.DecreaseBy(transaction.Quantity * transaction.PricePerUnit);
             }
         }
     }

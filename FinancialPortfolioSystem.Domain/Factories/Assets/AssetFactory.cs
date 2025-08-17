@@ -1,4 +1,5 @@
-﻿using FinancialPortfolioSystem.Domain.Exceptions;
+﻿using FinancialPortfolioSystem.Domain.Common;
+using FinancialPortfolioSystem.Domain.Exceptions;
 using FinancialPortfolioSystem.Domain.Models.Assets;
 
 namespace FinancialPortfolioSystem.Domain.Factories.Assets
@@ -9,7 +10,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
         private string tickerSymbol = default;
         private string name = default;
         private string description = default;
-        private decimal marketPrice = default;
+        private Currency marketPrice = default;
 
         private bool assetTypeSet = false;
         private bool tickerSymbolSet = false;
@@ -45,7 +46,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
             return this;
         }
 
-        public AssetFactory WithMarketPrice(decimal marketPrice)
+        public AssetFactory WithMarketPrice(Currency marketPrice)
         {
             this.marketPrice = marketPrice;
             this.marketPriceSet = true;

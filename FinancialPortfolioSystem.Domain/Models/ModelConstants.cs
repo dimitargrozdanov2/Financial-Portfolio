@@ -13,6 +13,7 @@ namespace FinancialPortfolioSystem.Domain.Models
             public const int MinNameLength = 2;
             public const int MaxNameLength = 50;
             public const int Zero = 0;
+            public const int MaxCurrencyLength = 25;
         }
 
         public class Asset
