@@ -7,7 +7,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Assets
 {
     public class Asset : Entity<Guid>, IAggregateRoot
     {
-        internal Asset(AssetType assetType, string tickerSymbol, string name, string description, Currency marketPrice)
+        internal Asset(AssetType assetType, string tickerSymbol, string name, string description, decimal marketPrice)
         {
             this.Validate(assetType, tickerSymbol, name, description, marketPrice);
 
@@ -15,7 +15,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Assets
             this.TickerSymbol = tickerSymbol;
             this.Name = name;
             this.Description = description;
-            this.MarketPriceCurrency = marketPrice;
+            this.MarketPrice = marketPrice;
         }
 
         public AssetType AssetType { get; }
@@ -26,9 +26,9 @@ namespace FinancialPortfolioSystem.Domain.Models.Assets
 
         public string Description { get; }
 
-        public Currency MarketPriceCurrency { get; }
+        public decimal MarketPrice { get; }
 
-        private void Validate(AssetType assetType, string tickerSymbol, string name, string description, Currency marketPrice)
+        private void Validate(AssetType assetType, string tickerSymbol, string name, string description, decimal marketPrice)
         {
             Guard.AgainstDefault<InvalidAssetException>(
                 assetType,
@@ -51,6 +51,10 @@ namespace FinancialPortfolioSystem.Domain.Models.Assets
                 MinDescriptionLength,
                 MaxDescriptionLength,
                 nameof(this.Description));
+
+            Guard.AgainstZeroOrNegative<InvalidAssetException>(
+                marketPrice,
+                nameof(this.MarketPrice));
        }
     }
 }

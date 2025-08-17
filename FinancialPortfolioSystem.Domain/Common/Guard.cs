@@ -72,6 +72,17 @@ namespace FinancialPortfolioSystem.Domain.Common
             ThrowException<TException>($"{name} cannot be default!");
         }
 
+        public static void AgainstZeroOrNegative<TException>(decimal number, string name = "Value")
+            where TException : BaseDomainException, new()
+        {
+            if (number > 0)
+            {
+                return;
+            }
+
+            ThrowException<TException>($"{name} must be greater than zero.");
+        }
+
         private static void ThrowException<TException>(string message)
             where TException : BaseDomainException, new()
         {

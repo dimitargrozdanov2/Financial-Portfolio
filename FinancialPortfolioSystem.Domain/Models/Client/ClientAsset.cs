@@ -6,39 +6,55 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
 {
     public class ClientAsset : ValueObject
     {
-        internal ClientAsset(Guid assetId, int quantity, Currency totalAmountPaid)
+        internal ClientAsset(Guid assetId, int quantity, decimal averageCost)
         {
-            Validate(quantity, totalAmountPaid);
+            Validate(quantity, averageCost);
 
             this.AssetId = assetId;
             this.Quantity = quantity;
-            this.TotalAmountPaid = totalAmountPaid;
+            this.AverageCost = averageCost;
         }
 
         public Guid AssetId { get; }
         public int Quantity { get; private set; }
-        public Currency TotalAmountPaid { get; private set; }
+        public decimal AverageCost { get; private set; }
 
-        private void Validate(int quantity, Currency totalAmountPaid)
+        private void Validate(int quantity, decimal averageCost)
         {
             Guard.AgainstOutOfRange<InvalidClientAssetException>(
                 quantity,
                 Zero,
                 int.MaxValue,
                 nameof(this.Quantity));
+
+            Guard.AgainstOutOfRange<InvalidClientAssetException>(
+                averageCost,
+                Zero,
+                decimal.MaxValue,
+                nameof(this.AverageCost));
         }
 
         internal void ApplyTransaction(ClientTransaction transaction)
         {
             if (transaction.Type.Equals(ClientTransactionType.Buy))
             {
-                Quantity += transaction.Quantity; //test to see if transaction parameters are populated
-                TotalAmountPaid.IncreaseBy(transaction.Quantity * transaction.PricePerUnit);
+                var totalCostBefore = Quantity * AverageCost;
+                var totalCostAfter = totalCostBefore + (transaction.Quantity * transaction.PricePerUnit);
+                Quantity += transaction.Quantity; // test to see if transaction parameters are populated
+                AverageCost = totalCostAfter / Quantity;
             }
             else if (transaction.Type.Equals(ClientTransactionType.Sell))
             {
                 Quantity -= transaction.Quantity;
-                TotalAmountPaid.DecreaseBy(transaction.Quantity * transaction.PricePerUnit);
+                if (Quantity < 0)
+                {
+                    throw new InvalidClientAssetException("You not allowed to sell more than you own!");
+                }
+
+                if (Quantity == 0)
+                {
+                    AverageCost = 0;
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Exceptions;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
+using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Transaction;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
 {
@@ -27,14 +28,12 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
         {
             Guard.AgainstOutOfRange<InvalidClientTransactionException>(
                 quantity,
-                Zero,
+                MinTransactionQuantity,
                 int.MaxValue,
                 nameof(quantity));
 
-            Guard.AgainstOutOfRange<InvalidClientTransactionException>(
+            Guard.AgainstZeroOrNegative<InvalidClientTransactionException>(
                 pricePerUnit,
-                Zero,
-                decimal.MaxValue,
                 nameof(pricePerUnit));
 
             Guard.AgainstDefault<InvalidClientTransactionException>(

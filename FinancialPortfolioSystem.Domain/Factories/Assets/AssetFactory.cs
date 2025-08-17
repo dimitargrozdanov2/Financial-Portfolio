@@ -10,7 +10,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
         private string tickerSymbol = default;
         private string name = default;
         private string description = default;
-        private Currency marketPrice = default;
+        private decimal marketPrice = default;
 
         private bool assetTypeSet = false;
         private bool tickerSymbolSet = false;
@@ -46,7 +46,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
             return this;
         }
 
-        public AssetFactory WithMarketPrice(Currency marketPrice)
+        public AssetFactory WithMarketPrice(decimal marketPrice)
         {
             this.marketPrice = marketPrice;
             this.marketPriceSet = true;

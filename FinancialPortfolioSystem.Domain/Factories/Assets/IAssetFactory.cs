@@ -7,7 +7,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
     {
         AssetFactory WithAssetType(AssetType assetType);
         AssetFactory WithDescription(string description);
-        AssetFactory WithMarketPrice(Currency marketPrice);
+        AssetFactory WithMarketPrice(decimal marketPrice);
         AssetFactory WithName(string name);
         AssetFactory WithTickerSymbol(string tickerSymbol);
     }

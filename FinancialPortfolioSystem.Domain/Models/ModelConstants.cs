@@ -17,5 +17,10 @@
             public const int MinDescriptionLength = 10;
             public const int MaxDescriptionLength = 1000;
         }
+
+        public class Transaction
+        {
+            public const int MinTransactionQuantity = 1;
+        }
     }
 }

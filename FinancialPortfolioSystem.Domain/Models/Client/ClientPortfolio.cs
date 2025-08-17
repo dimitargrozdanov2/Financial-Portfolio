@@ -38,7 +38,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             var clientAsset = _clientAssets.FirstOrDefault(ca => ca.AssetId == asset.Id);
             if (clientAsset == null)
             {
-                clientAsset = new ClientAsset(asset.Id, 0, new Currency(asset.MarketPriceCurrency.Name, 0));
+                clientAsset = new ClientAsset(asset.Id, clientTransaction.Quantity, clientTransaction.PricePerUnit);
                 _clientAssets.Add(clientAsset);
             }
 
