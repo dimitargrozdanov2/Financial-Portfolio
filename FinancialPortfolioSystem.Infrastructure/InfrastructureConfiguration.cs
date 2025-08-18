@@ -1,4 +1,6 @@
-﻿using FinancialPortfolioSystem.Infrastructure.Persistence;
+﻿using FinancialPortfolioSystem.Application.Features.Assets;
+using FinancialPortfolioSystem.Infrastructure.Persistence;
+using FinancialPortfolioSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +13,8 @@ namespace FinancialPortfolioSystem.Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
             => services
-                .AddDatabase(configuration);
+                .AddDatabase(configuration)
+                .AddRepositories();
 
         private static IServiceCollection AddDatabase(
             this IServiceCollection services,
@@ -25,6 +28,9 @@ namespace FinancialPortfolioSystem.Infrastructure
                                 .Assembly.FullName)))
                 .AddTransient<IPortfolioDbInitializer, PortfolioDbInitializer>();
 
+        private static IServiceCollection AddRepositories(
+            this IServiceCollection services)
+            => services.AddTransient<IAssetRepository, AssetRepository>();
         // TO DO: register repositories here
     }
 }

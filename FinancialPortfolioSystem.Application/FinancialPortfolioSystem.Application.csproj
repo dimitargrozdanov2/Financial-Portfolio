@@ -7,7 +7,20 @@
 
   <ItemGroup>
     <Folder Include="Contracts\" />
-    <Folder Include="Features\" />
+    <Folder Include="Features\Assets\Commands\" />
+    <Folder Include="Features\Assets\Queries\MyAssets\" />
+    <Folder Include="Features\Assets\Queries\Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiteBus" Version="3.1.0" />
+    <PackageReference Include="LiteBus.Commands.Extensions.MicrosoftDependencyInjection" Version="3.1.0" />
+    <PackageReference Include="LiteBus.Messaging.Extensions.MicrosoftDependencyInjection" Version="3.1.0" />
+    <PackageReference Include="LiteBus.Queries.Extensions.MicrosoftDependencyInjection" Version="3.1.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>

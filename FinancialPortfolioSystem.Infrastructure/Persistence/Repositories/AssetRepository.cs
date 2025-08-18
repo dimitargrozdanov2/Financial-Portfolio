@@ -1,6 +1,33 @@
-﻿namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
+﻿using FinancialPortfolioSystem.Application.Features.Assets;
+using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
+using Mapster;
+using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
+
+namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
 {
-    internal class AssetRepository
+    internal class AssetRepository : IAssetRepository
     {
+        private readonly IMapper _mapper;
+        private readonly FinancePortfolioDbContext _data;
+
+        public AssetRepository(IMapper mapper, FinancePortfolioDbContext db)
+        {
+            this._mapper = mapper;
+            this._data = db;
+        }
+
+        public async Task<AllAssetsOutputModel> GetAll(CancellationToken cancellationToken = default)
+        {
+            var dataModels = await this._data.Assets.ToListAsync(cancellationToken);
+            var x = _mapper.Adapt<List<AssetOutputModel>>(); //to test
+            var items = dataModels.Adapt<List<AssetOutputModel>>();
+            return new AllAssetsOutputModel
+            {
+                Items = items,
+                Count = items.Count
+            };
+        }
+
     }
 }
