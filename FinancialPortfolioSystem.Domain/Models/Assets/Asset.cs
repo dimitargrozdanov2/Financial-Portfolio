@@ -5,7 +5,7 @@ using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
 namespace FinancialPortfolioSystem.Domain.Models.Assets
 {
-    public class Asset : Entity<Guid>, IAggregateRoot
+    public class Asset : Entity<int>, IAggregateRoot
     {
         internal Asset(AssetType assetType, string tickerSymbol, string name, string description, decimal marketPrice)
         {

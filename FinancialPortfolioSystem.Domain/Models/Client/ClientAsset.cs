@@ -6,7 +6,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
 {
     public class ClientAsset : ValueObject
     {
-        internal ClientAsset(Guid assetId, int quantity, decimal averageCost)
+        internal ClientAsset(int assetId, int quantity, decimal averageCost)
         {
             Validate(quantity, averageCost);
 
@@ -15,7 +15,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             this.AverageCost = averageCost;
         }
 
-        public Guid AssetId { get; }
+        public int AssetId { get; }
         public int Quantity { get; private set; }
         public decimal AverageCost { get; private set; }
 

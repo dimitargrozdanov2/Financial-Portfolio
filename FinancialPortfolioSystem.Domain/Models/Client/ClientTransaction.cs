@@ -7,7 +7,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
 {
     public class ClientTransaction : Entity<Guid>
     {
-        internal ClientTransaction(Guid assetId, ClientTransactionType type, int quantity, decimal pricePerUnit, DateTime timestamp)
+        internal ClientTransaction(int assetId, ClientTransactionType type, int quantity, decimal pricePerUnit, DateTime timestamp)
         {
             this.Validate(quantity, pricePerUnit, timestamp);
 
@@ -18,7 +18,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             this.Timestamp = timestamp;
         }
 
-        public Guid AssetId { get; private set; }
+        public int AssetId { get; private set; }
         public ClientTransactionType Type { get; private set; }
         public int Quantity { get; private set; }
         public decimal PricePerUnit { get; private set; }

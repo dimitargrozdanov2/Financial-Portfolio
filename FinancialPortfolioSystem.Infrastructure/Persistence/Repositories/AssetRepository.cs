@@ -1,5 +1,7 @@
 ﻿using FinancialPortfolioSystem.Application.Features.Assets;
 using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
+using FinancialPortfolioSystem.Domain.Common;
+using FinancialPortfolioSystem.Domain.Models.Assets;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
@@ -29,5 +31,11 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
             };
         }
 
+        public async Task Create(Asset asset, CancellationToken cancellationToken = default)
+        {
+            await this._data.Assets.AddAsync(asset); //need to add model of database
+
+            await this._data.SaveChangesAsync(cancellationToken);
+        }
     }
 }

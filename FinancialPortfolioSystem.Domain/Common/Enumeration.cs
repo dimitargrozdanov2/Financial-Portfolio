@@ -55,6 +55,19 @@ namespace FinancialPortfolioSystem.Domain.Common
             return matchingItem;
         }
 
+        public static bool HasValue<T>(int value) where T : Enumeration
+        {
+            try
+            {
+                FromValue<T>(value);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (!(obj is Enumeration otherValue))

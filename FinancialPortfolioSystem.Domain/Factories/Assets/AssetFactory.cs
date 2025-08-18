@@ -4,7 +4,7 @@ using FinancialPortfolioSystem.Domain.Models.Assets;
 
 namespace FinancialPortfolioSystem.Domain.Factories.Assets
 {
-    internal class AssetFactory : IAssetFactory
+    public class AssetFactory : IAssetFactory
     {
         private AssetType assetType = default;
         private string tickerSymbol = default;
