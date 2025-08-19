@@ -1,13 +1,8 @@
 ﻿using FinancialPortfolioSystem.Application.Common;
-using FinancialPortfolioSystem.Web.Common;
+using FinancialPortfolioSystem.Web.Extensions;
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinancialPortfolioSystem.Web.Middleware
 {

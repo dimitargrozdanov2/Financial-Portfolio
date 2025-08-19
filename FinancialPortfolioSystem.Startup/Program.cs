@@ -1,5 +1,6 @@
 using FinancialPortfolioSystem.Application;
 using FinancialPortfolioSystem.Infrastructure;
+using FinancialPortfolioSystem.Web.Extensions;
 using FinancialPortfolioSystem.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseValidationExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

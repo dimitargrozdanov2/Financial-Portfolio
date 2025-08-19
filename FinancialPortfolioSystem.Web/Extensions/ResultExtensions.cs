@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinancialPortfolioSystem.Web.Common
+namespace FinancialPortfolioSystem.Web.Extensions
 {
     public static class ResultExtensions
     {
