@@ -6,6 +6,12 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence
 {
     internal class FinancePortfolioDbContext : DbContext
     {
+
+        public FinancePortfolioDbContext(DbContextOptions<FinancePortfolioDbContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Asset> Assets { get; set; }
 
         public DbSet<ClientPortfolio> ClientPortfolios { get; set; }
