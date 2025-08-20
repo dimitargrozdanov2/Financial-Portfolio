@@ -1,5 +1,5 @@
 ﻿using FinancialPortfolioSystem.Application.Common;
-using FinancialPortfolioSystem.Web.Middleware;
+using FinancialPortfolioSystem.Web.Façade;
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;

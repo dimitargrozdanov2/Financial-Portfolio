@@ -4,7 +4,7 @@ using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
 {
-    public class ClientAsset : ValueObject
+    public class ClientAsset : Entity<int>
     {
         internal ClientAsset(int assetId, int quantity, decimal averageCost)
         {

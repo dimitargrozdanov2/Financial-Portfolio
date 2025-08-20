@@ -4,7 +4,7 @@ using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialPortfolioSystem.Web.Middleware
+namespace FinancialPortfolioSystem.Web.Façade
 {
     public interface IAppMediator
     {
@@ -27,18 +27,18 @@ namespace FinancialPortfolioSystem.Web.Middleware
         }
 
         public async Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request)
-            => await this._queryMediator.QueryAsync(request).ToActionResult();
+            => await _queryMediator.QueryAsync(request).ToActionResult();
 
         public Task<ActionResult> QueryAsync(IQuery<Result> request)
-            => this._queryMediator.QueryAsync(request).ToActionResult();
+            => _queryMediator.QueryAsync(request).ToActionResult();
 
         public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request)
-            => await this._commandMediator.SendAsync(request).ToActionResult();
+            => await _commandMediator.SendAsync(request).ToActionResult();
 
         public Task<ActionResult> SendCommandAsync(ICommand<Result> request)
-            => this._commandMediator.SendAsync(request).ToActionResult();
+            => _commandMediator.SendAsync(request).ToActionResult();
 
         public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request)
-            => await this._commandMediator.SendAsync(request).ToActionResult();
+            => await _commandMediator.SendAsync(request).ToActionResult();
     }
 }

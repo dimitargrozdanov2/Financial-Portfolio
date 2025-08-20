@@ -5,24 +5,19 @@ using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
 {
-    public class ClientPortfolio : Entity<Guid>, IAggregateRoot
+    public class ClientPortfolio : Entity<int>, IAggregateRoot
     {
         private readonly HashSet<ClientAsset> _clientAssets = new HashSet<ClientAsset>();
         private readonly List<ClientTransaction> _clientTransactions = new List<ClientTransaction>(); // we may need them in order
 
-        private ClientPortfolio(Guid clientId)
+        internal ClientPortfolio(int clientId)
         {
             ClientId = clientId;
         }
 
         public IReadOnlyCollection<ClientAsset> ClientAssets => _clientAssets.ToList().AsReadOnly();
         public IReadOnlyCollection<ClientTransaction> Transactions => _clientTransactions.ToList().AsReadOnly();
-        public Guid ClientId { get; private set; }
-
-        public static ClientPortfolio CreateNew(Guid clientId)
-        {
-            return new ClientPortfolio(clientId);
-        }
+        public int ClientId { get; private set; }
 
         internal void BuyAsset(Asset asset, int quantity, decimal pricePerUnit)
         {
@@ -32,7 +27,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
                 int.MaxValue,
                 nameof(quantity));
 
-            var clientTransaction = new ClientTransaction(asset.Id, ClientTransactionType.Buy, quantity,  pricePerUnit, DateTime.UtcNow);
+            var clientTransaction = new ClientTransaction(asset.Id, ClientTransactionType.Buy, quantity,  pricePerUnit);
             _clientTransactions.Add(clientTransaction);
 
             var clientAsset = _clientAssets.FirstOrDefault(ca => ca.AssetId == asset.Id);
@@ -64,7 +59,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
                 throw new InvalidClientPortfolioException($"Cannot sell more than {clientAsset.Quantity} units of stock!");
             }
 
-            var clientTransaction = new ClientTransaction(asset.Id, ClientTransactionType.Sell, quantity, pricePerUnit, DateTime.UtcNow);
+            var clientTransaction = new ClientTransaction(asset.Id, ClientTransactionType.Sell, quantity, pricePerUnit);
             clientAsset.ApplyTransaction(clientTransaction);
 
             _clientTransactions.Add(clientTransaction);

@@ -1,6 +1,7 @@
 ﻿using FinancialPortfolioSystem.Domain.Models.Assets;
 using FinancialPortfolioSystem.Domain.Models.Client;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FinancialPortfolioSystem.Infrastructure.Persistence
 {
@@ -18,5 +19,11 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence
 
         public DbSet<ClientTransaction> ClientTransactions { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(builder);
+        }
     }
 }

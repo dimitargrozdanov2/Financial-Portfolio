@@ -1,8 +1,8 @@
-using FinancialPortfolioSystem.Application;
+﻿using FinancialPortfolioSystem.Application;
 using FinancialPortfolioSystem.Domain.Factories.Assets;
 using FinancialPortfolioSystem.Infrastructure;
 using FinancialPortfolioSystem.Web.Extensions;
-using FinancialPortfolioSystem.Web.Middleware;
+using FinancialPortfolioSystem.Web.Façade;
 using Microsoft.AspNetCore.Builder;
 using NSwag.AspNetCore;
 

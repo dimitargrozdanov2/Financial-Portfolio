@@ -31,6 +31,5 @@ namespace FinancialPortfolioSystem.Infrastructure
         private static IServiceCollection AddRepositories(
             this IServiceCollection services)
             => services.AddTransient<IAssetRepository, AssetRepository>();
-        // TO DO: register repositories here
     }
 }

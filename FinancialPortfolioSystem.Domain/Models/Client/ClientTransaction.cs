@@ -5,17 +5,17 @@ using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Transaction;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
 {
-    public class ClientTransaction : Entity<Guid>
+    public class ClientTransaction : Entity<int>
     {
-        internal ClientTransaction(int assetId, ClientTransactionType type, int quantity, decimal pricePerUnit, DateTime timestamp)
+        internal ClientTransaction(int assetId, ClientTransactionType type, int quantity, decimal pricePerUnit)
         {
-            this.Validate(quantity, pricePerUnit, timestamp);
+            this.Validate(quantity, pricePerUnit);
 
             this.AssetId = assetId;
             this.Type = type;
             this.Quantity = quantity;
             this.PricePerUnit = pricePerUnit;
-            this.Timestamp = timestamp;
+            this.Timestamp = DateTime.UtcNow;
         }
 
         public int AssetId { get; private set; }
@@ -24,7 +24,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
         public decimal PricePerUnit { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        private void Validate(int quantity, decimal pricePerUnit, DateTime timestamp)
+        private void Validate(int quantity, decimal pricePerUnit)
         {
             Guard.AgainstOutOfRange<InvalidClientTransactionException>(
                 quantity,
@@ -35,10 +35,6 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             Guard.AgainstZeroOrNegative<InvalidClientTransactionException>(
                 pricePerUnit,
                 nameof(pricePerUnit));
-
-            Guard.AgainstDefault<InvalidClientTransactionException>(
-                timestamp,
-                nameof(timestamp));
         }
     }
 }

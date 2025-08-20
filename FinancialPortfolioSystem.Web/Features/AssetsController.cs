@@ -1,7 +1,7 @@
 ﻿using FinancialPortfolioSystem.Application.Features.Assets.Commands.Create;
 using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
 using FinancialPortfolioSystem.Web.Common;
-using FinancialPortfolioSystem.Web.Middleware;
+using FinancialPortfolioSystem.Web.Façade;
 using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Authorization;
