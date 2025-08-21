@@ -26,14 +26,14 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations
                 .WithOne()
                 .Metadata
                 .PrincipalToDependent
-                .SetField("clientAssets");
+                .SetField("_clientAssets");
 
             builder
                 .HasMany(ct => ct.Transactions)
                 .WithOne()
                 .Metadata
                 .PrincipalToDependent
-                .SetField("transactions");
+                .SetField("_clientTransactions");
         }
     }
 }

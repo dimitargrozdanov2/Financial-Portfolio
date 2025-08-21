@@ -22,8 +22,7 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
         public async Task<AllAssetsOutputModel> GetAll(CancellationToken cancellationToken = default)
         {
             var dataModels = await this._data.Assets.ToListAsync(cancellationToken);
-            var x = _mapper.Adapt<List<AssetOutputModel>>(); //to test
-            var items = dataModels.Adapt<List<AssetOutputModel>>();
+            var items = _mapper.Map<List<AssetOutputModel>>(dataModels);
             return new AllAssetsOutputModel
             {
                 Items = items,

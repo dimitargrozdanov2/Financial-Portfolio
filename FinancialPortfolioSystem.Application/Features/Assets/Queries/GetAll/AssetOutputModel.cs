@@ -9,10 +9,10 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll
 {
     public class AssetOutputModel
     {
-        public AssetType AssetType { get; }
-        public string TickerSymbol { get; }
-        public string Name { get; }
-        public string Description { get; }
-        public decimal MarketPrice { get; }
+        public AssetType AssetType { get; set; }
+        public string TickerSymbol { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal MarketPrice { get; set; }
     }
 }

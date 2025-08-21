@@ -55,7 +55,7 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets
 
         public Asset Build()
         {
-            if (!this.assetTypeSet || !this.tickerSymbolSet || !this.nameSet || this.descriptionSet || this.marketPriceSet)
+            if (!this.assetTypeSet || !this.tickerSymbolSet || !this.nameSet || !this.descriptionSet || !this.marketPriceSet)
             {
                 throw new InvalidAssetException(
                     $"{nameof(this.assetType)}, " +

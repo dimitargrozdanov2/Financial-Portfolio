@@ -1,5 +1,6 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Exceptions;
+using FinancialPortfolioSystem.Domain.Models.Assets;
 using FinancialPortfolioSystem.Domain.Models.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -21,6 +22,12 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations
             builder
                 .Property(ca => ca.AssetId)
                 .IsRequired();
+
+            builder
+                .HasOne<Asset>()
+                .WithMany()
+                .HasForeignKey(ca  => ca.AssetId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(ca => ca.Quantity)

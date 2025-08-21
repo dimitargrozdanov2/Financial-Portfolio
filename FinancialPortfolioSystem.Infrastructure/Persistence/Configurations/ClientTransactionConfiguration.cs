@@ -31,9 +31,7 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations
                 .HasColumnType("decimal(18,2)");
 
             builder
-                .Property(a => a.Timestamp)
-                .HasDefaultValue(DateTime.UtcNow);
-
+                .Property(a => a.Timestamp);
             builder.ToTable(t =>
             {
                 t.HasCheckConstraint("CK_ClientTransaction_Quantity", "[Quantity] >= 1");
