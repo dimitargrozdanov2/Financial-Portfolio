@@ -11,12 +11,8 @@ namespace FinancialPortfolioSystem.Web.Features
 {
     public class IdentityController : ApiController
     {
-        private readonly IIdentity _identity;
 
-        public IdentityController(IAppMediator mediator, IIdentity identity) : base(mediator)
-        {
-            this._identity = identity;
-        }
+        public IdentityController(IAppMediator mediator) : base(mediator) { }
 
         [HttpPost]
         [Route(nameof(Register))]

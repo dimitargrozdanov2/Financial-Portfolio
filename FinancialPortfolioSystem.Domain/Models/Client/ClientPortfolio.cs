@@ -10,14 +10,14 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
         private readonly HashSet<ClientAsset> _clientAssets = new HashSet<ClientAsset>();
         private readonly List<ClientTransaction> _clientTransactions = new List<ClientTransaction>(); // we may need them in order
 
-        internal ClientPortfolio(int clientId)
+        internal ClientPortfolio(string userId)
         {
-            ClientId = clientId;
+            UserId = userId;
         }
 
         public IReadOnlyCollection<ClientAsset> ClientAssets => _clientAssets.ToList().AsReadOnly();
         public IReadOnlyCollection<ClientTransaction> Transactions => _clientTransactions.ToList().AsReadOnly();
-        public int ClientId { get; private set; }
+        public string UserId { get; private set; }
 
         internal void BuyAsset(Asset asset, int quantity, decimal pricePerUnit)
         {

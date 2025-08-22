@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static FinancialPortfolioSystem.Infrastructure.Identity.IdentityConstants.Role;
 
 namespace FinancialPortfolioSystem.Infrastructure.Identity
 {
@@ -17,63 +18,111 @@ namespace FinancialPortfolioSystem.Infrastructure.Identity
     {
         private const string InvalidErrorMessage = "Invalid credentials.";
 
-        private readonly UserManager<User> userManager;
-        private readonly ApplicationSettings applicationSettings;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationSettings _applicationSettings;
 
         public IdentityService(
             UserManager<User> userManager,
+            RoleManager<IdentityRole> roleManager,
             IOptions<ApplicationSettings> applicationSettings)
         {
-            this.userManager = userManager;
-            this.applicationSettings = applicationSettings.Value;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _applicationSettings = applicationSettings.Value;
         }
 
         public async Task<Result> Register(UserInputModel userInput)
         {
             var user = new User(userInput.Email);
+            IdentityResult createResult = null;
 
-            var identityResult = await this.userManager.CreateAsync(user, userInput.Password);
+            try
+            {
+                createResult = await _userManager.CreateAsync(user, userInput.Password);
+                if (!createResult.Succeeded)
+                {
+                    var errors = createResult.Errors.Select(e => e.Description);
+                    return Result.Failure(errors);
+                }
 
-            var errors = identityResult.Errors.Select(e => e.Description);
+                if (!await _roleManager.RoleExistsAsync(UserRole))
+                {
+                    var roleResult = await _roleManager.CreateAsync(new IdentityRole(UserRole));
+                    if (!roleResult.Succeeded)
+                    {
+                        await _userManager.DeleteAsync(user);
 
-            return identityResult.Succeeded
-                ? Result.Success
-                : Result.Failure(errors);
+                        var errors = roleResult.Errors.Select(e => e.Description);
+                        return Result.Failure(errors);
+                    }
+                }
+
+                var roleAssignResult = await _userManager.AddToRoleAsync(user, UserRole);
+                if (!roleAssignResult.Succeeded)
+                {
+                    await _userManager.DeleteAsync(user);
+
+                    var errors = roleAssignResult.Errors.Select(e => e.Description);
+                    return Result.Failure(errors);
+                }
+
+                return Result.Success;
+            }
+            catch (Exception ex)
+            {
+                if (createResult?.Succeeded == true)
+                {
+                    await _userManager.DeleteAsync(user);
+                }
+
+                return Result.Failure(new[] { "Unexpected error: " + ex.Message });
+            }
         }
 
         public async Task<Result<LoginOutputModel>> Login(UserInputModel userInput)
         {
-            var user = await this.userManager.FindByEmailAsync(userInput.Email);
+            var user = await this._userManager.FindByEmailAsync(userInput.Email);
             if (user == null)
             {
-                return InvalidErrorMessage;
+                return Result<LoginOutputModel>.Failure(new[] { InvalidErrorMessage });
             }
 
-            var passwordValid = await this.userManager.CheckPasswordAsync(user, userInput.Password);
+            var passwordValid = await this._userManager.CheckPasswordAsync(user, userInput.Password);
             if (!passwordValid)
             {
-                return InvalidErrorMessage;
+                return Result<LoginOutputModel>.Failure(new[] { InvalidErrorMessage });
             }
+
+            var roles = await _userManager.GetRolesAsync(user);
 
             var token = this.GenerateJwtToken(
                 user.Id,
-                user.Email);
+                user.Email,
+                roles);
 
             return new LoginOutputModel(token);
         }
 
-        private string GenerateJwtToken(string userId, string email)
+        private string GenerateJwtToken(string userId, string email, IList<string> userRoles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(this.applicationSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_applicationSettings.Secret);
 
+            var claims = new List<Claim>()
+            {
+                    new Claim(ClaimTypes.NameIdentifier, userId),
+                    new Claim(ClaimTypes.Name, email),
+            };
+
+           foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+           
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, userId),
-                    new Claim(ClaimTypes.Name, email)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
@@ -88,14 +137,14 @@ namespace FinancialPortfolioSystem.Infrastructure.Identity
 
         public async Task<Result> ChangePassword(ChangePasswordInputModel changePasswordInput)
         {
-            var user = await this.userManager.FindByIdAsync(changePasswordInput.UserId);
+            var user = await _userManager.FindByIdAsync(changePasswordInput.UserId);
 
             if (user == null)
             {
                 return InvalidErrorMessage;
             }
 
-            var identityResult = await this.userManager.ChangePasswordAsync(
+            var identityResult = await _userManager.ChangePasswordAsync(
                 user,
                 changePasswordInput.CurrentPassword,
                 changePasswordInput.NewPassword);

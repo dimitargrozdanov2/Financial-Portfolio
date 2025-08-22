@@ -16,8 +16,11 @@ namespace FinancialPortfolioSystem.Web.Services
             }
 
             this.UserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            this.Roles = user.FindAll(ClaimTypes.Role).Select(x => x.Value).ToList();
         }
 
         public string UserId { get; }
+
+        public List<string> Roles { get; }
     }
 }

@@ -5,6 +5,7 @@ using FinancialPortfolioSystem.Infrastructure.Identity;
 using FinancialPortfolioSystem.Infrastructure.Persistence;
 using FinancialPortfolioSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -93,6 +94,18 @@ namespace FinancialPortfolioSystem.Infrastructure
 
             services.AddTransient<IIdentity, IdentityService>();
             return services;
+        }
+
+        public static async Task SeedAdminAsync(this WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var configuration = services.GetRequiredService<IConfiguration>();
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            await IdentitySeeder.SeedAdminAsync(configuration, userManager, roleManager);
         }
     }
 }

@@ -21,11 +21,6 @@ namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.Create
         {
             var result = await this._identity.Register(request);
 
-            //if (!result.Succeeded)
-            //{
-            //    return result;
-            //}
-
             return result;
         }
     }

@@ -21,6 +21,7 @@ namespace FinancialPortfolioSystem.Web.Features
         /// <param name="query">The query object containing filtering, paging, or other parameters for fetching assets.</param>
         /// <returns>An <see cref="AllAssetsOutputModel"/> containing the list of assets and any relevant metadata.</returns>
         [HttpGet]
+        [Authorize(Roles = "Admin,Client")]
         public async Task<ActionResult<AllAssetsOutputModel>> GetAll([FromQuery] GetAllAssetsQuery query)
             => await this.SendAsync(query);
 
@@ -31,7 +32,7 @@ namespace FinancialPortfolioSystem.Web.Features
         /// <param name="command">The asset creation command.</param>
         /// <returns>The created asset.</returns>
         [HttpPost]
-        //        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CreatedAssetOutputModel>> Create(CreateAssetCommand command)
             => await this.SendAsync(command);
     }

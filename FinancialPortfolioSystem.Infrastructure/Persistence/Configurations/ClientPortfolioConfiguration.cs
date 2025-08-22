@@ -18,7 +18,7 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations
                 .HasKey(cp => cp.Id);
 
             builder
-                .Property(ct => ct.ClientId)
+                .Property(ct => ct.UserId)
                 .IsRequired();
 
             builder

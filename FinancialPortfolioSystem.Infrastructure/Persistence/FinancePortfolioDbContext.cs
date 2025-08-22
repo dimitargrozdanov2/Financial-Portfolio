@@ -16,7 +16,6 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence
         }
 
         public DbSet<Asset> Assets { get; set; }
-
         public DbSet<ClientAsset> ClientAssets { get; set; }
         public DbSet<ClientPortfolio> ClientPortfolios { get; set; }
 

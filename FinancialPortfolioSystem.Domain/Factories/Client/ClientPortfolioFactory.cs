@@ -12,11 +12,11 @@ namespace FinancialPortfolioSystem.Domain.Factories.Client
 {
     public class ClientPortfolioFactory : IFactory<ClientPortfolio>
     {
-        private int clientId = default;
+        private string clientId = default;
 
         private bool clientIdSet = false;
 
-        public ClientPortfolioFactory WithClientId(int clientId)
+        public ClientPortfolioFactory WithClientId(string clientId)
         {
             this.clientId = clientId;
             this.clientIdSet = true;

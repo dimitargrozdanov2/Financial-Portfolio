@@ -1,9 +1,11 @@
 ﻿using FinancialPortfolioSystem.Application;
 using FinancialPortfolioSystem.Infrastructure;
+using FinancialPortfolioSystem.Infrastructure.Identity;
 using FinancialPortfolioSystem.Startup;
 using FinancialPortfolioSystem.Web;
 using FinancialPortfolioSystem.Web.Extensions;
 using FinancialPortfolioSystem.Web.Façade;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 var builderConfiguration = builder.Configuration;
@@ -20,10 +22,10 @@ builder.Services.AddInfrastructure(builderConfiguration);
 builder.Services.AddWebComponents();
 builder.Services.RegisterMappings();
 builder.Services.AddScoped<IAppMediator, AppMediator>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddOpenApiDocument();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -40,4 +42,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.Initialize();
+await app.SeedAdminAsync();
 app.Run();
+

@@ -1,5 +1,6 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Exceptions;
+using FinancialPortfolioSystem.Domain.Models.Assets;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Transaction;
 
@@ -9,7 +10,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
     {
         internal ClientTransaction(int assetId, ClientTransactionType type, int quantity, decimal pricePerUnit)
         {
-            this.Validate(quantity, pricePerUnit);
+            this.Validate(type, quantity, pricePerUnit);
 
             this.AssetId = assetId;
             this.Type = type;
@@ -24,8 +25,12 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
         public decimal PricePerUnit { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        private void Validate(int quantity, decimal pricePerUnit)
+        private void Validate(ClientTransactionType type, int quantity, decimal pricePerUnit)
         {
+            Guard.AgainstDefault<InvalidClientTransactionException>(
+                type,
+                nameof(this.Type));
+
             Guard.AgainstOutOfRange<InvalidClientTransactionException>(
                 quantity,
                 MinTransactionQuantity,

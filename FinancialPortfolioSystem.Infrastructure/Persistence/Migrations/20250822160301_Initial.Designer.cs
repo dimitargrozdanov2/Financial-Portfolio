@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialPortfolioSystem.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(FinancePortfolioDbContext))]
-    [Migration("20250821121116_Initial")]
+    [Migration("20250822160301_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -109,9 +109,6 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
