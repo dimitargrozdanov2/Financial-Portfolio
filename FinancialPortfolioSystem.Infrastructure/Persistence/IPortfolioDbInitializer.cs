@@ -1,6 +1,6 @@
 ﻿namespace FinancialPortfolioSystem.Infrastructure.Persistence
 {
-    internal interface IPortfolioDbInitializer
+    public interface IPortfolioDbInitializer
     {
         void Initialize();
     }

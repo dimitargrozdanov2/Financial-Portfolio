@@ -1,10 +1,9 @@
 ﻿using FinancialPortfolioSystem.Application;
-using FinancialPortfolioSystem.Domain.Factories.Assets;
 using FinancialPortfolioSystem.Infrastructure;
+using FinancialPortfolioSystem.Startup;
+using FinancialPortfolioSystem.Web;
 using FinancialPortfolioSystem.Web.Extensions;
 using FinancialPortfolioSystem.Web.Façade;
-using Microsoft.AspNetCore.Builder;
-using NSwag.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var builderConfiguration = builder.Configuration;
@@ -16,8 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.RegisterFactories();
 builder.Services.RegisterTransientInterfaces();
-builder.Services.AddApplication();
+builder.Services.AddApplication(builderConfiguration);
 builder.Services.AddInfrastructure(builderConfiguration);
+builder.Services.AddWebComponents();
 builder.Services.RegisterMappings();
 builder.Services.AddScoped<IAppMediator, AppMediator>();
 builder.Services.AddOpenApiDocument();
@@ -35,8 +35,9 @@ if (app.Environment.IsDevelopment())
 app.UseValidationExceptionHandler();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.Initialize();
 app.Run();

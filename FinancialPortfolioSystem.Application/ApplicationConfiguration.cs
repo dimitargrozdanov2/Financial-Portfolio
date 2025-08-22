@@ -1,4 +1,5 @@
-﻿using FinancialPortfolioSystem.Domain.Common;
+﻿using FinancialPortfolioSystem.Application;
+using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Factories;
 using FinancialPortfolioSystem.Domain.Models.Assets;
 using LiteBus;
@@ -13,7 +14,8 @@ using System.Reflection;
 public static class ApplicationConfiguration
 {
     public static IServiceCollection AddApplication(
-        this IServiceCollection services)
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddLiteBus(liteBus =>
         {
@@ -29,6 +31,10 @@ public static class ApplicationConfiguration
         });
 
         services.AddMapster();
+
+        services.Configure<ApplicationSettings>(
+                configuration.GetSection(nameof(ApplicationSettings)),
+                options => options.BindNonPublicProperties = true);
 
         return services;
     }
