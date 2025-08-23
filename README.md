@@ -1,4 +1,4 @@
-# Financial-Portfolio
+# Financial-Portfolio ![License: Custom](https://img.shields.io/badge/License-Custom-lightgrey.svg)
 Allows users to manage a simple financial investment portfolio
 
 # License 
