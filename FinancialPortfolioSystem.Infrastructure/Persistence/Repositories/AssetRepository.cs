@@ -15,14 +15,14 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
 
         public AssetRepository(IMapper mapper, FinancePortfolioDbContext db)
         {
-            this._mapper = mapper;
-            this._data = db;
+            _mapper = mapper;
+            _data = db;
         }
 
         public async Task<AllAssetsOutputModel> GetAll(CancellationToken cancellationToken = default)
         {
-            var dataModels = await this._data.Assets.ToListAsync(cancellationToken);
-            var items = _mapper.Map<List<AssetOutputModel>>(dataModels);
+            var dataModels = await _data.Assets.ToListAsync(cancellationToken);
+            var items = _mapper.Map<List<AssetDetailedOutputModel>>(dataModels);
             return new AllAssetsOutputModel
             {
                 Items = items,
@@ -30,11 +30,22 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
             };
         }
 
+        public async Task<Asset> GetById(int id, CancellationToken cancellationToken = default)
+        {
+            return await _data.Assets.Where(a => a.Id == id).FirstOrDefaultAsync(cancellationToken);
+        }
         public async Task Create(Asset asset, CancellationToken cancellationToken = default)
         {
-            await this._data.Assets.AddAsync(asset); //need to add model of database
+            await _data.Assets.AddAsync(asset);
 
-            await this._data.SaveChangesAsync(cancellationToken);
+            await _data.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateAsync(Asset asset, CancellationToken cancellationToken = default)
+        {
+            _data.Assets.Update(asset);
+
+            await _data.SaveChangesAsync(cancellationToken);
         }
     }
 }

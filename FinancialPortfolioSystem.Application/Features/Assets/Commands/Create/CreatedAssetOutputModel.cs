@@ -1,9 +1,9 @@
-﻿namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Create
-{
-    public class CreatedAssetOutputModel
-    {
-        public CreatedAssetOutputModel(int assetId) => this.AssetId = assetId;
+﻿using FinancialPortfolioSystem.Application.Features.Assets.Commands.Common;
 
-        public int AssetId { get; }
+namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Create
+{
+    public class CreatedAssetOutputModel(int assetId) //primary constructor
+    {
+        public int AssetId { get; } = assetId;
     }
 }

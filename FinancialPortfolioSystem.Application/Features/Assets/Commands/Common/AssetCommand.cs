@@ -10,8 +10,6 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Common
     public class AssetCommand<TCommand> : EntityCommand<int>
         where TCommand : EntityCommand<int>
     {
-        public int AssetType { get; set; }
-
         public string TickerSymbol { get; set; }
 
         public string Name { get; set; }

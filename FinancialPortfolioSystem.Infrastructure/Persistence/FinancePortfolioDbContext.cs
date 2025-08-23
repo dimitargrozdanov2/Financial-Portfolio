@@ -4,6 +4,7 @@ using FinancialPortfolioSystem.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace FinancialPortfolioSystem.Infrastructure.Persistence
 {
@@ -24,6 +25,9 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            builder.Entity<Asset>()
+                .HasQueryFilter(o => !o.IsDeleted);
 
             base.OnModelCreating(builder);
         }

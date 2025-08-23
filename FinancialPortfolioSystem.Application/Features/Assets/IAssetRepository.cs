@@ -15,5 +15,7 @@ namespace FinancialPortfolioSystem.Application.Features.Assets
 
         Task<AllAssetsOutputModel> GetAll(CancellationToken cancellationToken = default);
         Task Create(Asset asset, CancellationToken cancellationToken = default);
+        Task<Asset> GetById(int id, CancellationToken cancellationToken = default);
+        Task UpdateAsync(Asset asset, CancellationToken cancellationToken = default);
     }
 }

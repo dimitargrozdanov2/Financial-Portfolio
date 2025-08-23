@@ -8,6 +8,6 @@ namespace FinancialPortfolioSystem.Application.Features
 {
     public class EntityCommand<TId>
     {
-        public TId Id { get; set; } = default;
+        internal TId Id { get; set; } = default;
     }
 }

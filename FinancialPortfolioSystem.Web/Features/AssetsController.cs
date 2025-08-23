@@ -1,4 +1,6 @@
-﻿using FinancialPortfolioSystem.Application.Features.Assets.Commands.Create;
+﻿using FinancialPortfolioSystem.Application.Features;
+using FinancialPortfolioSystem.Application.Features.Assets.Commands.Create;
+using FinancialPortfolioSystem.Application.Features.Assets.Commands.Update;
 using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
 using FinancialPortfolioSystem.Web.Common;
 using FinancialPortfolioSystem.Web.Façade;
@@ -35,5 +37,17 @@ namespace FinancialPortfolioSystem.Web.Features
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<CreatedAssetOutputModel>> Create(CreateAssetCommand command)
             => await this.SendAsync(command);
+
+        /// <summary>
+        /// Updates an asset. Asset type cannot be changed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route(Id)]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<CreatedAssetOutputModel>> Edit(int id, UpdateAssetCommand command)
+            => await this.SendAsync(command.SetId(id));
     }
 }

@@ -18,10 +18,6 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Common
     {
         public AssetCommandValidator()
         {
-            this.RuleFor(c => c.AssetType)
-                .Must(Enumeration.HasValue<AssetType>)
-                .WithMessage("'Asset type' is not valid.");
-
             this.RuleFor(c => c.TickerSymbol)
                 .MinimumLength(MinTickerSymbolLength)
                 .MaximumLength(MaxTickerSymbolLength)

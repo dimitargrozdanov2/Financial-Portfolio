@@ -9,7 +9,7 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll
 {
     public class AllAssetsOutputModel
     {
-        public List<AssetOutputModel> Items { get; set; }
+        public List<AssetDetailedOutputModel> Items { get; set; }
 
         public int Count { get; set; }
     }

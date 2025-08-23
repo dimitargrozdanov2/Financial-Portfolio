@@ -9,8 +9,8 @@ namespace FinancialPortfolioSystem.Application
     {
         public static void RegisterMappings(this IServiceCollection serviceCollection)
         {
-            TypeAdapterConfig<Asset, AssetOutputModel>.NewConfig();
-            TypeAdapterConfig<List<Asset>, List<AssetOutputModel>>.NewConfig();
+            TypeAdapterConfig<Asset, AssetDetailedOutputModel>.NewConfig();
+            TypeAdapterConfig<List<Asset>, List<AssetDetailedOutputModel>>.NewConfig();
         }
     }
 }

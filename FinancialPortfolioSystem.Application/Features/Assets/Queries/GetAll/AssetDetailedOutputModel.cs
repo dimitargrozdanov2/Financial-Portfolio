@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll
 {
-    public class AssetOutputModel
+    public class AssetDetailedOutputModel
     {
+        public int Id { get; set; }
         public AssetType AssetType { get; set; }
         public string TickerSymbol { get; set; }
         public string Name { get; set; }

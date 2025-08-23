@@ -46,6 +46,10 @@ namespace FinancialPortfolioSystem.Web.Middleware
                     code = HttpStatusCode.BadRequest;
                     result = SerializeObject(new[] { "Invalid request." });
                     break;
+
+                case BaseDomainException:
+                    code = HttpStatusCode.BadRequest;
+                    break;
             }
 
             context.Response.ContentType = "application/json";
