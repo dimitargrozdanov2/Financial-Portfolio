@@ -23,6 +23,11 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Update
         {
             var asset = await this._assetRepository.GetById(request.Id, cancellationToken);
 
+            if (asset == null)
+            {
+                return Result.Failure(new[] { "Asset not found!" }); 
+            }
+
             asset
                 .UpdateTickerSymbol(request.TickerSymbol)
                 .UpdateDescription(request.Description)

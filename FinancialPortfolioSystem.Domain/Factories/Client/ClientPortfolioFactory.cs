@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinancialPortfolioSystem.Domain.Factories.Client
 {
-    public class ClientPortfolioFactory : IFactory<ClientPortfolio>
+    public class ClientPortfolioFactory : IClientPortfolioFactory
     {
         private string clientId = default;
 

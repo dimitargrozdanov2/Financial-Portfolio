@@ -34,7 +34,7 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
         {
             return await _data.Assets.Where(a => a.Id == id).FirstOrDefaultAsync(cancellationToken);
         }
-        public async Task Create(Asset asset, CancellationToken cancellationToken = default)
+        public async Task CreateAsync(Asset asset, CancellationToken cancellationToken = default)
         {
             await _data.Assets.AddAsync(asset);
 

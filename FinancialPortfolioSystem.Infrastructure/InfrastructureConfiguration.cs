@@ -1,5 +1,6 @@
 ﻿using FinancialPortfolioSystem.Application;
 using FinancialPortfolioSystem.Application.Features.Assets;
+using FinancialPortfolioSystem.Application.Features.ClientPortfolios;
 using FinancialPortfolioSystem.Application.Features.Identity;
 using FinancialPortfolioSystem.Infrastructure.Identity;
 using FinancialPortfolioSystem.Infrastructure.Persistence;
@@ -39,7 +40,9 @@ namespace FinancialPortfolioSystem.Infrastructure
 
         private static IServiceCollection AddRepositories(
             this IServiceCollection services)
-            => services.AddTransient<IAssetRepository, AssetRepository>();
+            => services
+                .AddTransient<IAssetRepository, AssetRepository>()
+                .AddTransient<IClientPortfolioRepository, ClientPortfolioRepository>();
 
         private static IServiceCollection AddIdentity(
                    this IServiceCollection services,

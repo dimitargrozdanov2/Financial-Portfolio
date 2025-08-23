@@ -1,6 +1,7 @@
 ﻿using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Exceptions;
 using FinancialPortfolioSystem.Domain.Models.Assets;
+using System.ComponentModel.DataAnnotations;
 using static FinancialPortfolioSystem.Domain.Models.ModelConstants.Common;
 
 namespace FinancialPortfolioSystem.Domain.Models.Client
@@ -19,13 +20,9 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
         public IReadOnlyCollection<ClientTransaction> Transactions => _clientTransactions.ToList().AsReadOnly();
         public string UserId { get; private set; }
 
-        internal void BuyAsset(Asset asset, int quantity, decimal pricePerUnit)
+        public void BuyAsset(Asset asset, int quantity, decimal pricePerUnit)
         {
-            Guard.AgainstOutOfRange<InvalidAssetException>(
-                quantity,
-                Zero,
-                int.MaxValue,
-                nameof(quantity));
+            Validate(quantity, pricePerUnit);
 
             var clientTransaction = new ClientTransaction(asset.Id, ClientTransactionType.Buy, quantity,  pricePerUnit);
             _clientTransactions.Add(clientTransaction);
@@ -36,17 +33,16 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
                 clientAsset = new ClientAsset(asset.Id, clientTransaction.Quantity, clientTransaction.PricePerUnit);
                 _clientAssets.Add(clientAsset);
             }
+            else
+            {
+                clientAsset.ApplyTransaction(clientTransaction);
+            }
 
-            clientAsset.ApplyTransaction(clientTransaction);
         }
 
-        internal void SellAsset(Asset asset, int quantity, decimal pricePerUnit)
+        public void SellAsset(Asset asset, int quantity, decimal pricePerUnit)
         {
-            Guard.AgainstOutOfRange<InvalidClientPortfolioException>(
-                quantity,
-                Zero,
-                int.MaxValue,
-                nameof(quantity));
+            Validate(quantity, pricePerUnit);
 
             var clientAsset = _clientAssets.FirstOrDefault(ca => ca.AssetId == asset.Id);
             if (clientAsset == null)
@@ -63,6 +59,17 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             clientAsset.ApplyTransaction(clientTransaction);
 
             _clientTransactions.Add(clientTransaction);
+        }
+
+        private void Validate(int quantity, decimal pricePerUnit)
+        {
+            Guard.AgainstZeroOrNegative<InvalidClientPortfolioException>(
+                quantity,
+                nameof(quantity));
+
+            Guard.AgainstZeroOrNegative<InvalidClientPortfolioException>(
+                pricePerUnit,
+                nameof(pricePerUnit));
         }
     }
 }

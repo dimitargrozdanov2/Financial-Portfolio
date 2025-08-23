@@ -1,5 +1,6 @@
 ﻿using FinancialPortfolioSystem.Application.Features;
 using FinancialPortfolioSystem.Application.Features.Assets.Commands.Create;
+using FinancialPortfolioSystem.Application.Features.Assets.Commands.Delete;
 using FinancialPortfolioSystem.Application.Features.Assets.Commands.Update;
 using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
 using FinancialPortfolioSystem.Web.Common;
@@ -47,7 +48,19 @@ namespace FinancialPortfolioSystem.Web.Features
         [HttpPut]
         [Route(Id)]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<CreatedAssetOutputModel>> Edit(int id, UpdateAssetCommand command)
+        public async Task<ActionResult> Edit(int id, UpdateAssetCommand command)
+            => await this.SendAsync(command.SetId(id));
+
+        /// <summary>
+        /// Soft deletes an asset.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route(Id)]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Remove(int id, [FromRoute] DeleteAssetCommand command)
             => await this.SendAsync(command.SetId(id));
     }
 }

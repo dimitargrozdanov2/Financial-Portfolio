@@ -40,7 +40,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client
             {
                 var totalCostBefore = Quantity * AverageCost;
                 var totalCostAfter = totalCostBefore + (transaction.Quantity * transaction.PricePerUnit);
-                Quantity += transaction.Quantity; // test to see if transaction parameters are populated
+                Quantity += transaction.Quantity;
                 AverageCost = totalCostAfter / Quantity;
             }
             else if (transaction.Type.Equals(ClientTransactionType.Sell))

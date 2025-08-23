@@ -26,8 +26,7 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Create
                 .WithDescription(request.Description)
                 .WithMarketPrice(request.MarketPrice)
                 .Build();
-
-            await this._assetRepository.Create(asset, cancellationToken);
+            await this._assetRepository.CreateAsync(asset, cancellationToken);
 
             return new CreatedAssetOutputModel(asset.Id);
         }
