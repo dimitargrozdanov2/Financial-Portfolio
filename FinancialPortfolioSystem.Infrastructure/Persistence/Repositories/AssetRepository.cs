@@ -5,6 +5,7 @@ using FinancialPortfolioSystem.Domain.Models.Assets;
 using Mapster;
 using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
 {
@@ -19,9 +20,9 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence.Repositories
             _data = db;
         }
 
-        public async Task<AllAssetsOutputModel> GetAll(CancellationToken cancellationToken = default)
+        public async Task<AllAssetsOutputModel> GetAll(Expression<Func<Asset,bool>> func = default, CancellationToken cancellationToken = default)
         {
-            var dataModels = await _data.Assets.ToListAsync(cancellationToken);
+            var dataModels = await _data.Assets.Where(func).ToListAsync(cancellationToken);
             var items = _mapper.Map<List<AssetDetailedOutputModel>>(dataModels);
             return new AllAssetsOutputModel
             {

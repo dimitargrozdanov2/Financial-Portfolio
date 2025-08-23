@@ -6,9 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Assets\Queries\MyAssets\" />
     <Folder Include="Features\Assets\Queries\Common\" />
-    <Folder Include="Features\ClientPortfolios\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
