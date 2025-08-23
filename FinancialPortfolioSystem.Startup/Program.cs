@@ -6,6 +6,8 @@ using FinancialPortfolioSystem.Web;
 using FinancialPortfolioSystem.Web.Extensions;
 using FinancialPortfolioSystem.Web.Façade;
 using Microsoft.AspNetCore.Identity;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 var builderConfiguration = builder.Configuration;
@@ -23,7 +25,18 @@ builder.Services.AddWebComponents();
 builder.Services.RegisterMappings();
 builder.Services.AddScoped<IAppMediator, AppMediator>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-builder.Services.AddOpenApiDocument();
+builder.Services.AddOpenApiDocument(doc =>
+{
+    doc.AddSecurity("bearer", new NSwag.OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = OpenApiSecurityApiKeyLocation.Header,
+        Description = "Bearer token authorization header",
+    });
+
+    doc.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("bearer"));
+});
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
