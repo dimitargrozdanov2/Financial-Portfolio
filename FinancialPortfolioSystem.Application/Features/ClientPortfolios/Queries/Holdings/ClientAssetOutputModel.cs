@@ -8,6 +8,9 @@ namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Queries
 {
     public class ClientAssetOutputModel
     {
+        public int Id { get; set; }
+
+        public int AssetId { get; set; }
         public int Quantity { get; set; }
 
         public string AssetName { get; set; }

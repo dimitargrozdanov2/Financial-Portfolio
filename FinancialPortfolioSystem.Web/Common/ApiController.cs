@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FinancialPortfolioSystem.Web.Common
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public abstract class ApiController : ControllerBase
     {
         public const string PathSeparator = "/";

@@ -49,6 +49,8 @@ namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Queries
                 foreach (var clientAsset in clientAssets)
                 {
                     ClientAssetOutputModel clientAssetOutputModel = new ClientAssetOutputModel();
+                    clientAssetOutputModel.Id = clientAsset.Id;
+                    clientAssetOutputModel.AssetId = clientAsset.AssetId;
                     clientAssetOutputModel.Quantity = clientAsset.Quantity;
                     var asset = assets.FirstOrDefault(x => x.Id == clientAsset.AssetId);
                     clientAssetOutputModel.MarketPrice = asset.MarketPrice;

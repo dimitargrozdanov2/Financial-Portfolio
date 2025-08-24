@@ -37,8 +37,18 @@ builder.Services.AddOpenApiDocument(doc =>
 
     doc.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("bearer"));
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowUI", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // your FE URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+  
 var app = builder.Build();
+app.UseCors("AllowUI");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

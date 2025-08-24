@@ -18,7 +18,7 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll
 
         public async Task<AllAssetsOutputModel> HandleAsync(GetAllAssetsQuery message, CancellationToken cancellationToken = default)
         {
-            return await this._assetRepository.GetAll();
+            return await this._assetRepository.GetAll(a => !a.IsDeleted);
         }
     }
 }

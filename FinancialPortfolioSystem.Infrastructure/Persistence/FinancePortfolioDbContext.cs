@@ -26,8 +26,7 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            builder.Entity<Asset>()
-                .HasQueryFilter(o => !o.IsDeleted);
+            builder.Entity<Asset>();
 
             base.OnModelCreating(builder);
         }
