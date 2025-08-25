@@ -110,7 +110,7 @@ sequenceDiagram
     participant Repo as PortfolioRepository
     participant DB as SQL Server
 
-    U->>API: POST /api/portfolios/buy
+    U->>API: POST /api/clientportfolio/buy
     API->>App: Send(BuyAssetCommand)
     App->>Repo: GetPortfolio()
     Repo->>DB: SELECT ...
