@@ -1,133 +1,232 @@
-Financial Portfolio Management App – Architecture Document
+# Backend Architecture for **Financial-Portfolio**
 
-1. Overview
+> Target audience: developers and reviewers of the backend. This document explains how the backend is structured, how requests flow through the system, and the conventions you should follow when extending it.
 
-The Financial Portfolio Management App is a lightweight client–server web application that enables users to manage their financial investment portfolios. It supports authentication, portfolio asset management, transaction recording, and performance reporting through a clean architecture approach.
+## 1) High‑level Overview
 
-Tech Stack:
+The backend is an ASP.NET Core Web API organized with **Clean Architecture + DDD**. The solution uses:
 
-Frontend: React (Vite)
+* **Domain** — enterprise core: entities, enumerations, domain exceptions, invariants.
+* **Application** — use cases (CQRS commands/queries), interfaces/ports, mapping.
+* **Infrastructure** — EF Core persistence, repositories, Identity, external services.
+* **Startup** — composition root wiring Application/Infrastructure behind interfaces so the **Web** layer depends only on **Application**.
+* **Web (API)** — thin HTTP MEdiator façade (controllers/endpoints)
 
-Backend: ASP.NET Core Web API
+Supporting libs/choices already in the repo:
 
-Database: SQL Server with Entity Framework Core (Code-First)
+* **ASP.NET Core Web API** with **ASP.NET Identity** for auth.
+* **EF Core (Code‑First)** to SQL Server.
+* **Mapster** for DTO mapping (Automapper alternative).
+* **LiteBus** (CQRS/Mediator alternative) behind a simple façade.
+* **FluentValidation** - settings rules for Commands and Queries
+* **NSwag** - Swagger
 
-Communication: REST (JSON over HTTP/S)
+> The **Startup** project exists to preserve the Clean Architecture dependency rule (Presentation → Application only). All Infrastructure wiring happens in Startup and is injected into Web at runtime.
 
-Hosting: Runnable locally
+<img width="701" height="161" alt="image" src="https://github.com/user-attachments/assets/e2054a25-e368-42dd-92ea-a9fc99cd4387" />
 
-2. System Context
 
-+---------------------+        +------------------------+        +-------------------+
-|      End User       | <----> |   React Frontend (UI)  | <----> | ASP.NET Core API  |
-+---------------------+        +------------------------+        +-------------------+
-                                                              |
-                                                              v
-                                                     +-----------------+
-                                                     |   SQL Server    |
-                                                     | (EF Core Models)|
-                                                     +-----------------+
+---
 
-3. Logical Architecture
+## 2) Solution Structure & Responsibilities
 
-3.1 Frontend (React)
+```
+FinancialPortfolioSystem.Application/
+FinancialPortfolioSystem.Domain/
+FinancialPortfolioSystem.Infrastructure/
+FinancialPortfolioSystem.Startup/
+FinancialPortfolioSystem.Web/
+UI/
+```
 
-Provides UI for registration/login, portfolio overview, asset CRUD, and transactions.
 
-Communicates with the backend via RESTful API calls.
+## 3) Domain Model (Core)
+No framework dependencies.
 
-3.2 Backend (ASP.NET Core API)
+**Aggregates & Entities**
 
-Organized into layers for separation of concerns:
+* **Client** — identity of the portfolio owner; owns **Portfolio**.
+* **Portfolio** (aggregate root) — collection of **Positions** and **Transactions**; exposes operations `Buy`, `Sell`, `Reprice`, `Revalue` enforcing invariants.
+* **Asset** — canonical instrument reference (Ticker, Name, Type: Stock/Bond/ETF).
+* **Position** (ClientAsset) — quantity, average cost, realized/unrealized P\&L.
+* **Transaction** — buy/sell with timestamp, price, fees (append‑only ledger).
 
-Controllers: Handle HTTP requests and responses.
 
-Services: Contain business logic (buy/sell assets, portfolio calculations).
+**Invariants & Rules** (illustrative):
 
-Repositories: Interact with EF Core for database operations.
+* Cannot sell more than current `Position.Quantity`.
+* Average cost updated on buys (`moving‑average`).
 
-Models/DTOs: Define data structures for persistence and API responses.
 
-3.3 Database (SQL Server, EF Core Code‑First)
+## 4) Application Layer (Use Cases with CQRS)
 
-Uses Entity Framework Core with migrations.
+The Application layer holds the **use‑case orchestration** and is the only layer that knows about both Domain and Infrastructure via **ports**.
 
-Stores users, assets, portfolios, and transaction history.
+### Commands & Queries
 
-4. Authentication & Authorization
+* Commands/Queries are using via a Mediator.
+* They are dispatched via the **LiteBus** mediator façade, enabling pipeline behaviors similar to MediatR.
+* Handlers use **repositories or factory** ports, not EF types directly.
 
-Registration: Users create accounts with email + password.
+### Pipeline Behaviors
 
-Login: Validates credentials and issues authentication token.
+* **ValidationPreHandler** — validate incoming command/query DTOs.(FluentValidation is used).
 
-Password Security: Passwords stored as hashes (industry best practices).
+### Mapping
 
-Authorization: Users can only access their own portfolio and transactions.
+* **Mapster** configurations live under `Application/Mapping`. Handlers produce **response DTOs**; controllers should not map entities.
 
-Roles: Admin and Client, enabling restricted access to certain endpoints.
+---
 
-5. Key Features
+## 5) Infrastructure Layer
 
-User Management: Register, login, secure authentication.
+### Persistence
 
-Portfolio CRUD: Add, update, delete assets (Stocks, Bonds, ETFs, etc.).
+* **EF Core** `AppDbContext` with DbSets for `Assets`, `Portfolios`, `Positions`, `Transactions`, and ASP.NET Identity tables.
+* Separate **EntityTypeConfiguration** classes to keep the model clean.
+* **Repositories** implement `IPortfolioRepository`, `IAssetRepository`
+* **Migrations** directory is source‑controlled; Schema evolves via code‑first migrations.
 
-Transactions: Buy/sell assets with timestamped transaction logging.
+### Identity & Security
 
-Portfolio Summary: Display current holdings and total value.
+* **ASP.NET Identity** is used for user store and password hashing.
+* **Authentication** uses **JWT Bearer**.
+* **Authorization**: role-based checks. Roles are **Admin** and **Client**., e.g., `Holdings` → only available for Client.
 
-Reports Endpoint: Returns total invested amount, mocked current market value, and ROI.
+---
 
-6. Data Model
+## 6) Web (Presentation/API)
 
-Entities:
+* **Controllers** are thin; they accept request DTOs, send commands/queries through the mediator, and return typed results with ProblemDetails for errors.
+* **Error Handling**: global exception filter/middleware maps `DomainException` → 400, `ModelValidation` → 400, unhandled → 500.
 
-User (Id, Email, PasswordHash, Role, PortfolioId)
+### Example Request Flow
 
-Portfolio (Id, UserId, Assets, Transactions)
+```mermaid
+sequenceDiagram
+    actor U as User (Client)
+    participant API as Web API
+    participant App as Application
+    participant Repo as PortfolioRepository
+    participant DB as SQL Server
 
-Asset (Id, Name, Type, Price)
+    U->>API: POST /api/portfolios/{id}/buy
+    API->>App: Send(BuyAssetCommand)
+    App->>Repo: GetPortfolio(id)
+    Repo->>DB: SELECT ...
+    DB-->>Repo: Portfolio
+    App->>App: Portfolio.Buy(assetId, qty, price)
+    App->>Repo: Save(Portfolio)
+    Repo->>DB: INSERT Transaction, UPDATE Position
+    App-->>API: Result DTO (updated summary)
+    API-->>U: 200 OK (JSON)
+```
 
-ClientAsset (Id, PortfolioId, AssetId, Quantity)
+---
 
-ClientTransaction (Id, PortfolioId, AssetId, Quantity, Type, Timestamp)
+## 7) Database Design
 
-ER Diagram:
+* **Tables**: `AspNetUsers`, `AspNetRoles`, `AspNetUserRoles`, `Assets`, `ClientPortfolios`, `ClientAssets` (positions), `ClientTransactions`.
+* **Indexes** could be introduced for performance gain. 
 
-User (1) —— (1) Portfolio —— (M) ClientAsset —— (1) Asset
-                          \
-                           (M)
-                           ClientTransaction —— (1) Asset
 
-7. Deployment & Setup
+## 8) Error Handling & Problem Details
 
-Clone repository: git clone https://github.com/dimitargrozdanov2/Financial-Portfolio
+Define a set of well‑known application exceptions:
 
-Configure database connection in appsettings.json.
+* `Different DomainException` based on the domain model (validation/invariant broken)
+* `ModelValidationException`
+* `AdminUserSeedingException`
 
-Run backend: dotnet run
+ExceptionHandlerMiddleware returns the corresponding status code.
 
-Run frontend:
+## 9) Security Model
 
-cd frontend
-npm install
-npm run dev
+* **AuthN**: ASP.NET Identity; passwords hashed with PBKDF2 (Identity default). Two roles are available - Client and Admin.
 
-8. Evaluation Criteria Coverage
+## 10) Testing Strategy in the future
 
-✅ Clean architecture and separation of concerns
+Domain tests — pure in‑memory tests for aggregates and value objects.
 
-✅ Authentication & Authorization with secure password storage
+Application tests — handler tests with InMemoryDbContext or SQLite; verify transactions and mapping.
 
-✅ CRUD operations for assets and transactions
+API tests — minimal integration tests using WebApplicationFactory against a test DB.
 
-✅ Reports endpoint for metrics (invested, ROI, value)
+Folder proposal:
+<img width="1042" height="155" alt="image" src="https://github.com/user-attachments/assets/c585b1a3-a33b-413a-96b3-4db63ac5772c" />
 
-✅ Minimal React frontend for interactions
+## 11) Observability - future propsitions
+•	Logging: structured logs (Serilog or built in) with CorrelationId and user id claims.
+•	Health Checks: /health for liveness and /ready for DB/Identity checks.
+•	Metrics: minimal counters (requests, error rate, command timings). Hook into OpenTelemetry when needed.
 
-✅ EF Core Code-First schema with migrations
+## 12) Configuration & Environments
 
-✅ RESTful API conventions
+* `appsettings.json` with  connection string and application secret used in JWT token generation
 
-✅ GitHub documentation & repo organization
+## 13) API Surface (initial)
 
+* `POST /api/identity/register` — create user
+* `POST /api/identity/login` — issue token
+* `PUT /api/identity/changepassword` — change password
+* `GET /api/assets` — list assets (both Admin and Client)
+* `POST /api/assets` — create (Admin)
+* `PUT /api/assets` — edit (Admin)
+* `DELETE /api/assets` — delete (Admin) 
+* `GET /api/portfolios/ — get portfolio summary 
+* `POST /api/portfolios/buy` — buy asset (Client)
+* `POST /api/portfolios/sell` — sell asset (Client)
+* `GET /api/portfolios/metrics` — ROI/market value (Client)
+
+> The only endpoints that do not require Authorization are for registering a user and logging.
+
+## 15) Extension Points & Roadmap
+• Implement integration and unit tests.
+•	Swap mock market data provider with a real API adapter.
+•	Add outbox pattern for reliable domain event publishing.
+•	Introduce specification pattern for complex queries.
+•	Add refresh tokens and device tracking to improve auth.
+•	Implement export (CSV/PDF) and notifications.
+
+
+## 16) Coding Conventions (abridged)
+•	Use primary constructors
+•	Keep controllers ≤ 50 LOC; no business logic in controllers.
+•	One handler per command/query and a separate validation class if needed ; do not share mutable state.
+•	Prefer Value Objects over primitive obsession; guard invariants in factories.
+• Communicate only with aggregate roots, use Factories and Repositories as ACL(Anti Corruption Layer)
+•	Use Utc everywhere (persisted as UTC in DB).
+
+## 17) Appendix — Reference DI registration (pseudo code)
+// Startup project
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        services.AddLiteBus();            // mediator
+        services.AddValidators();         // if FluentValidation is added later
+        services.AddMapster();            // mapping profiles
+        return services;
+    }
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration cfg)
+    {
+        services.AddDbContext<AppDbContext>(o =>
+            o.UseSqlServer(cfg.GetConnectionString("Default")));
+
+        services.AddIdentityCore<AppUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
+
+        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+        services.AddScoped<IAssetRepository, AssetRepository>();
+        services.AddScoped<IMarketDataService, MockMarketDataService>();
+        services.AddTransient<IClock, SystemClock>();
+
+        return services;
+    }
+}
+
+
+**That’s it**. This is the living blueprint for the backend. When you add a feature, start at the **Application layer** (command/query + handler + DTO + tests), model the change in **Domain**, implement the port in ** Infrastructure**, and expose it via a thin ** Web** endpoint.
