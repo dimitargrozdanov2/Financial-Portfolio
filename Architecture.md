@@ -182,20 +182,28 @@ In the future, those secrets may be moved to a safer storage - such as Azure Key
 > The only endpoints that do not require Authorization are for registering a user and logging.
 
 ## 14) Extension Points & Roadmap
-• Implement integration and unit tests.
+•   Implement integration and unit tests.
+
 •	Swap mock market data provider with a real API adapter.
+
 •	Add outbox pattern for reliable domain event publishing.
+
 •	Introduce specification pattern for complex queries.
+
 •	Add refresh tokens and device tracking to improve auth.
+
 •	Implement export (CSV/PDF) and notifications.
 
 
 ## 15) Coding Conventions (abridged)
 •	Use primary constructors
+
 •	Keep controllers ≤ 50 LOC; no business logic in controllers.
+
 •	One handler per command/query and a separate validation class if needed ; do not share mutable state.
-•	Prefer Value Objects over primitive obsession; guard invariants in factories.
-• Communicate only with aggregate roots, use Factories and Repositories as ACL(Anti Corruption Layer)
+
+•   Communicate only with aggregate roots, use Factories and Repositories as ACL(Anti Corruption Layer)
+
 •	Use Utc everywhere (persisted as UTC in DB).
 
 ## 16) Appendix — Reference DI registration example
@@ -285,4 +293,4 @@ public static class InfrastructureConfiguration
 }
 
 
-**That’s it**. This is the living blueprint for the backend. When you add a feature, start at the **Application layer** (command/query + handler + DTO + tests), model the change in **Domain**, implement the port in ** Infrastructure**, and expose it via a thin ** Web** endpoint.
+**That’s it**. This is the living blueprint for the backend. When you add a feature, start at the **Domain** and model the necessary object. Make sure it is encapsulated.  Then implement Use Case in the **Application layer** (command/query + handler + DTO + tests), implement the port in ** Infrastructure**, and expose it via a thin ** Web** endpoint.
