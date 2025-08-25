@@ -110,12 +110,12 @@ sequenceDiagram
     participant Repo as PortfolioRepository
     participant DB as SQL Server
 
-    U->>API: POST /api/portfolios/{id}/buy
+    U->>API: POST /api/portfolios/buy
     API->>App: Send(BuyAssetCommand)
-    App->>Repo: GetPortfolio(id)
+    App->>Repo: GetPortfolio()
     Repo->>DB: SELECT ...
     DB-->>Repo: Portfolio
-    App->>App: Portfolio.Buy(assetId, qty, price)
+    App->>App: Portfolio.Buy(assetId, qty)
     App->>Repo: Save(Portfolio)
     Repo->>DB: INSERT Transaction, UPDATE Position
     App-->>API: Result DTO (updated summary)
