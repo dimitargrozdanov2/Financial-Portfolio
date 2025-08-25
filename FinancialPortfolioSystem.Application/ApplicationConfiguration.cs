@@ -2,7 +2,6 @@
 using FinancialPortfolioSystem.Domain.Common;
 using FinancialPortfolioSystem.Domain.Factories;
 using FinancialPortfolioSystem.Domain.Models.Assets;
-using LiteBus;
 using LiteBus.Commands.Extensions.MicrosoftDependencyInjection;
 using LiteBus.Messaging.Extensions.MicrosoftDependencyInjection;
 using LiteBus.Queries.Extensions.MicrosoftDependencyInjection;
@@ -10,6 +9,8 @@ using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+
+namespace FinancialPortfolioSystem.Application;
 
 public static class ApplicationConfiguration
 {

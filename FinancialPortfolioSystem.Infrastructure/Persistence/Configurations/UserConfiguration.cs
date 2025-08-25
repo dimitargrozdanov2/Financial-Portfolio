@@ -2,30 +2,24 @@
 using FinancialPortfolioSystem.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations
+namespace FinancialPortfolioSystem.Infrastructure.Persistence.Configurations;
+
+internal class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    internal class UserConfiguration : IEntityTypeConfiguration<User>
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        public void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder
-                .HasKey(u => u.Id);
+        builder
+            .HasKey(u => u.Id);
 
-            builder
-                .Property(u => u.Email) // add regex validation for email
-                .IsRequired();
+        builder
+            .Property(u => u.Email) // add regex validation for email
+            .IsRequired();
 
-            builder
-                .HasOne(u => u.Portfolio)
-                .WithOne()
-                .HasForeignKey<ClientPortfolio>("UserId")
-                .IsRequired();
-        }
+        builder
+            .HasOne(u => u.Portfolio)
+            .WithOne()
+            .HasForeignKey<ClientPortfolio>("UserId")
+            .IsRequired();
     }
 }

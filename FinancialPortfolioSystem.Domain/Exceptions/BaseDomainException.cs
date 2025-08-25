@@ -1,13 +1,12 @@
-﻿namespace FinancialPortfolioSystem.Domain.Exceptions
-{
-    public abstract class BaseDomainException : Exception
-    {
-        private string error;
+﻿namespace FinancialPortfolioSystem.Domain.Exceptions;
 
-        public string Error
-        {
-            get => this.error ?? base.Message;
-            set => this.error = value;
-        }
+public abstract class BaseDomainException : Exception
+{
+    private string error;
+
+    public string Error
+    {
+        get => this.error ?? base.Message;
+        set => this.error = value;
     }
 }

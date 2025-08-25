@@ -1,9 +1,6 @@
-﻿using FinancialPortfolioSystem.Application.Features.Assets.Commands.Common;
+﻿namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Create;
 
-namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Create
+public class CreatedAssetOutputModel(int assetId)
 {
-    public class CreatedAssetOutputModel(int assetId) //primary constructor
-    {
-        public int AssetId { get; } = assetId;
-    }
+    public int AssetId { get; } = assetId;
 }

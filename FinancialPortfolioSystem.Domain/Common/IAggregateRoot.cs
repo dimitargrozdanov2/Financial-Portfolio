@@ -1,6 +1,5 @@
-﻿namespace FinancialPortfolioSystem.Domain.Common
+﻿namespace FinancialPortfolioSystem.Domain.Common;
+
+public interface IAggregateRoot
 {
-    public interface IAggregateRoot
-    {
-    }
 }

@@ -2,9 +2,8 @@
 using FinancialPortfolioSystem.Application.Features.Assets.Commands.Common;
 using LiteBus.Commands.Abstractions;
 
-namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Update
+namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Update;
+
+public class UpdateAssetCommand : AssetCommand<UpdateAssetCommand>, ICommand<Result>
 {
-    public class UpdateAssetCommand : AssetCommand<UpdateAssetCommand>, ICommand<Result>
-    {
-    }
 }

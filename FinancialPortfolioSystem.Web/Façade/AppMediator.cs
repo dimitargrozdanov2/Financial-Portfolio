@@ -4,41 +4,40 @@ using LiteBus.Commands.Abstractions;
 using LiteBus.Queries.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinancialPortfolioSystem.Web.Façade
+namespace FinancialPortfolioSystem.Web.Façade;
+
+public interface IAppMediator
 {
-    public interface IAppMediator
+    Task<ActionResult> QueryAsync(IQuery<Result> request);
+    Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request);
+    Task<ActionResult> SendCommandAsync(ICommand<Result> request);
+    Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request);
+    Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request);
+}
+
+public class AppMediator : IAppMediator
+{
+    private readonly ICommandMediator _commandMediator;
+    private readonly IQueryMediator _queryMediator;
+
+    public AppMediator(ICommandMediator commandMediator, IQueryMediator queryMediator)
     {
-        Task<ActionResult> QueryAsync(IQuery<Result> request);
-        Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request);
-        Task<ActionResult> SendCommandAsync(ICommand<Result> request);
-        Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request);
-        Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request);
+        _commandMediator = commandMediator;
+        _queryMediator = queryMediator;
     }
 
-    public class AppMediator : IAppMediator
-    {
-        private readonly ICommandMediator _commandMediator;
-        private readonly IQueryMediator _queryMediator;
+    public async Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request)
+        => await _queryMediator.QueryAsync(request).ToActionResult();
 
-        public AppMediator(ICommandMediator commandMediator, IQueryMediator queryMediator)
-        {
-            _commandMediator = commandMediator;
-            _queryMediator = queryMediator;
-        }
+    public Task<ActionResult> QueryAsync(IQuery<Result> request)
+        => _queryMediator.QueryAsync(request).ToActionResult();
 
-        public async Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request)
-            => await _queryMediator.QueryAsync(request).ToActionResult();
+    public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request)
+        => await _commandMediator.SendAsync(request).ToActionResult();
 
-        public Task<ActionResult> QueryAsync(IQuery<Result> request)
-            => _queryMediator.QueryAsync(request).ToActionResult();
+    public Task<ActionResult> SendCommandAsync(ICommand<Result> request)
+        => _commandMediator.SendAsync(request).ToActionResult();
 
-        public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request)
-            => await _commandMediator.SendAsync(request).ToActionResult();
-
-        public Task<ActionResult> SendCommandAsync(ICommand<Result> request)
-            => _commandMediator.SendAsync(request).ToActionResult();
-
-        public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request)
-            => await _commandMediator.SendAsync(request).ToActionResult();
-    }
+    public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request)
+        => await _commandMediator.SendAsync(request).ToActionResult();
 }

@@ -14,101 +14,100 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace FinancialPortfolioSystem.Infrastructure
+namespace FinancialPortfolioSystem.Infrastructure;
+
+public static class InfrastructureConfiguration
 {
-    public static class InfrastructureConfiguration
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration)
+        => services
+            .AddDatabase(configuration)
+            .AddRepositories()
+            .AddIdentity(configuration);
+
+    private static IServiceCollection AddDatabase(
+        this IServiceCollection services,
+        IConfiguration configuration)
+        => services
+            .AddDbContext<FinancePortfolioDbContext>(options => options
+                .UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    sqlServer => sqlServer
+                        .MigrationsAssembly(typeof(FinancePortfolioDbContext)
+                            .Assembly.FullName)))
+            .AddTransient<IPortfolioDbInitializer, PortfolioDbInitializer>();
+
+    private static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+        => services
+            .AddTransient<IAssetRepository, AssetRepository>()
+            .AddTransient<IClientPortfolioRepository, ClientPortfolioRepository>();
+
+    private static IServiceCollection AddIdentity(
+               this IServiceCollection services,
+               IConfiguration configuration)
     {
-        public static IServiceCollection AddInfrastructure(
-            this IServiceCollection services,
-            IConfiguration configuration)
-            => services
-                .AddDatabase(configuration)
-                .AddRepositories()
-                .AddIdentity(configuration);
+        services
+            
+            .AddIdentityCore<User>(options =>
+            {
+                // Password settings
+                options.Password.RequiredLength = 8;          // Minimum 8 characters
+                options.Password.RequireDigit = true;         // At least one number
+                options.Password.RequireLowercase = true;     // At least one lowercase
+                options.Password.RequireUppercase = true;     // At least one uppercase
+                options.Password.RequireNonAlphanumeric = true; // At least one symbol (!, @, #, etc.)
 
-        private static IServiceCollection AddDatabase(
-            this IServiceCollection services,
-            IConfiguration configuration)
-            => services
-                .AddDbContext<FinancePortfolioDbContext>(options => options
-                    .UseSqlServer(
-                        configuration.GetConnectionString("DefaultConnection"),
-                        sqlServer => sqlServer
-                            .MigrationsAssembly(typeof(FinancePortfolioDbContext)
-                                .Assembly.FullName)))
-                .AddTransient<IPortfolioDbInitializer, PortfolioDbInitializer>();
+                // Lockout settings (optional but recommended)
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
 
-        private static IServiceCollection AddRepositories(
-            this IServiceCollection services)
-            => services
-                .AddTransient<IAssetRepository, AssetRepository>()
-                .AddTransient<IClientPortfolioRepository, ClientPortfolioRepository>();
+                // User settings (optional)
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<FinancePortfolioDbContext>();
 
-        private static IServiceCollection AddIdentity(
-                   this IServiceCollection services,
-                   IConfiguration configuration)
-        {
-            services
-                
-                .AddIdentityCore<User>(options =>
+        var secret = configuration
+                       .GetSection(nameof(ApplicationSettings))
+                       .GetValue<string>(nameof(ApplicationSettings.Secret));
+
+        var key = Encoding.ASCII.GetBytes(secret);
+
+        services
+            .AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.RequireHttpsMetadata = false; //this should be true in production!
+                bearer.SaveToken = true;
+                bearer.TokenValidationParameters = new TokenValidationParameters
                 {
-                    // Password settings
-                    options.Password.RequiredLength = 8;          // Minimum 8 characters
-                    options.Password.RequireDigit = true;         // At least one number
-                    options.Password.RequireLowercase = true;     // At least one lowercase
-                    options.Password.RequireUppercase = true;     // At least one uppercase
-                    options.Password.RequireNonAlphanumeric = true; // At least one symbol (!, @, #, etc.)
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
-                    // Lockout settings (optional but recommended)
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-                    options.Lockout.AllowedForNewUsers = true;
+        services.AddTransient<IIdentity, IdentityService>();
+        return services;
+    }
 
-                    // User settings (optional)
-                    options.User.RequireUniqueEmail = true;
-                })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<FinancePortfolioDbContext>();
+    public static async Task SeedAdminAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
 
-            var secret = configuration
-                           .GetSection(nameof(ApplicationSettings))
-                           .GetValue<string>(nameof(ApplicationSettings.Secret));
+        var configuration = services.GetRequiredService<IConfiguration>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var key = Encoding.ASCII.GetBytes(secret);
-
-            services
-                .AddAuthentication(authentication =>
-                {
-                    authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(bearer =>
-                {
-                    bearer.RequireHttpsMetadata = false; //this should be true in production!
-                    bearer.SaveToken = true;
-                    bearer.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
-            services.AddTransient<IIdentity, IdentityService>();
-            return services;
-        }
-
-        public static async Task SeedAdminAsync(this WebApplication app)
-        {
-            using var scope = app.Services.CreateScope();
-            var services = scope.ServiceProvider;
-
-            var configuration = services.GetRequiredService<IConfiguration>();
-            var userManager = services.GetRequiredService<UserManager<User>>();
-            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-            await IdentitySeeder.SeedAdminAsync(configuration, userManager, roleManager);
-        }
+        await IdentitySeeder.SeedAdminAsync(configuration, userManager, roleManager);
     }
 }

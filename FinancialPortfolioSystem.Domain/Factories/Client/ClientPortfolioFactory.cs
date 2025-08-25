@@ -1,37 +1,29 @@
 ﻿using FinancialPortfolioSystem.Domain.Exceptions;
-using FinancialPortfolioSystem.Domain.Factories.Assets;
-using FinancialPortfolioSystem.Domain.Models.Assets;
 using FinancialPortfolioSystem.Domain.Models.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FinancialPortfolioSystem.Domain.Factories.Client
+namespace FinancialPortfolioSystem.Domain.Factories.Client;
+
+public class ClientPortfolioFactory : IClientPortfolioFactory
 {
-    public class ClientPortfolioFactory : IClientPortfolioFactory
+    private string clientId = default;
+
+    private bool clientIdSet = false;
+
+    public ClientPortfolioFactory WithClientId(string clientId)
     {
-        private string clientId = default;
+        this.clientId = clientId;
+        this.clientIdSet = true;
+        return this;
+    }
 
-        private bool clientIdSet = false;
-
-        public ClientPortfolioFactory WithClientId(string clientId)
+    public ClientPortfolio Build()
+    {
+        if (!this.clientIdSet)
         {
-            this.clientId = clientId;
-            this.clientIdSet = true;
-            return this;
+            throw new InvalidClientPortfolioException(
+                $"{nameof(this.clientId)} must have a value.");
         }
 
-        public ClientPortfolio Build()
-        {
-            if (!this.clientIdSet)
-            {
-                throw new InvalidClientPortfolioException(
-                    $"{nameof(this.clientId)} must have a value.");
-            }
-
-            return new ClientPortfolio(this.clientId);
-        }
+        return new ClientPortfolio(this.clientId);
     }
 }

@@ -1,11 +1,10 @@
-﻿namespace FinancialPortfolioSystem.Domain.Exceptions
-{
-    public class InvalidAssetException : BaseDomainException
-    {
-        public InvalidAssetException() 
-        { 
-        }
+﻿namespace FinancialPortfolioSystem.Domain.Exceptions;
 
-        public InvalidAssetException(string message) => this.Error = message;
+public class InvalidAssetException : BaseDomainException
+{
+    public InvalidAssetException() 
+    { 
     }
+
+    public InvalidAssetException(string message) => this.Error = message;
 }

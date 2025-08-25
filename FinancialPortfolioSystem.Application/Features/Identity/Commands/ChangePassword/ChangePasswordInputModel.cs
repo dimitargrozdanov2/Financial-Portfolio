@@ -1,21 +1,20 @@
-﻿namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.ChangePassword
+﻿namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.ChangePassword;
+
+public class ChangePasswordInputModel
 {
-    public class ChangePasswordInputModel
+    public ChangePasswordInputModel(
+        string userId,
+        string currentPassword,
+        string newPassword)
     {
-        public ChangePasswordInputModel(
-            string userId,
-            string currentPassword,
-            string newPassword)
-        {
-            this.UserId = userId;
-            this.CurrentPassword = currentPassword;
-            this.NewPassword = newPassword;
-        }
-
-        public string UserId { get; }
-
-        public string CurrentPassword { get; }
-
-        public string NewPassword { get; }
+        this.UserId = userId;
+        this.CurrentPassword = currentPassword;
+        this.NewPassword = newPassword;
     }
+
+    public string UserId { get; }
+
+    public string CurrentPassword { get; }
+
+    public string NewPassword { get; }
 }

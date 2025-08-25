@@ -1,11 +1,10 @@
-﻿namespace FinancialPortfolioSystem.Domain.Exceptions
-{
-    public class InvalidClientTransactionException : BaseDomainException
-    {
-        public InvalidClientTransactionException()
-        {
-        }
+﻿namespace FinancialPortfolioSystem.Domain.Exceptions;
 
-        public InvalidClientTransactionException(string message) => this.Error = message;
+public class InvalidClientTransactionException : BaseDomainException
+{
+    public InvalidClientTransactionException()
+    {
     }
+
+    public InvalidClientTransactionException(string message) => this.Error = message;
 }

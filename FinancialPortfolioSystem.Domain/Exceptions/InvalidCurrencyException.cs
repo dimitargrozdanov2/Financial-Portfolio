@@ -1,11 +1,10 @@
-﻿namespace FinancialPortfolioSystem.Domain.Exceptions
-{
-    internal class InvalidCurrencyException : BaseDomainException
-    {
-        public InvalidCurrencyException()
-        {
-        }
+﻿namespace FinancialPortfolioSystem.Domain.Exceptions;
 
-        public InvalidCurrencyException(string message) => this.Error = message;
+internal class InvalidCurrencyException : BaseDomainException
+{
+    public InvalidCurrencyException()
+    {
     }
+
+    public InvalidCurrencyException(string message) => this.Error = message;
 }

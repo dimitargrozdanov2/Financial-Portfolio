@@ -2,9 +2,8 @@
 using FinancialPortfolioSystem.Application.Features.ClientPortfolio.Commands.Common;
 using LiteBus.Commands.Abstractions;
 
-namespace FinancialPortfolioSystem.Application.Features.ClientPortfolio.Commands.BuyAsset
+namespace FinancialPortfolioSystem.Application.Features.ClientPortfolio.Commands.BuyAsset;
+
+public class BuyClientAssetCommand : ClientAssetCommand<BuyClientAssetCommand>, ICommand<Result>
 {
-    public class BuyClientAssetCommand : ClientAssetCommand<BuyClientAssetCommand>, ICommand<Result>
-    {
-    }
 }

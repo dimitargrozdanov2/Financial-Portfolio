@@ -3,14 +3,13 @@ using FinancialPortfolioSystem.Domain.Models.Assets;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FinancialPortfolioSystem.Application
+namespace FinancialPortfolioSystem.Application;
+
+public static class AutoMapperConfiguration
 {
-    public static class AutoMapperConfiguration
+    public static void RegisterMappings(this IServiceCollection serviceCollection)
     {
-        public static void RegisterMappings(this IServiceCollection serviceCollection)
-        {
-            TypeAdapterConfig<Asset, AssetDetailedOutputModel>.NewConfig();
-            TypeAdapterConfig<List<Asset>, List<AssetDetailedOutputModel>>.NewConfig();
-        }
+        TypeAdapterConfig<Asset, AssetDetailedOutputModel>.NewConfig();
+        TypeAdapterConfig<List<Asset>, List<AssetDetailedOutputModel>>.NewConfig();
     }
 }

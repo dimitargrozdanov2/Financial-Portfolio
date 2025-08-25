@@ -1,9 +1,7 @@
-﻿using FinancialPortfolioSystem.Application.Features.Assets.Queries.GetAll;
-using LiteBus.Queries.Abstractions;
+﻿using LiteBus.Queries.Abstractions;
 
-namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Queries.Holdings
+namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Queries.Holdings;
+
+public class GetPortfolioHoldingsQuery : IQuery<AllClientAssetsOutputModel>
 {
-    public class GetPortfolioHoldingsQuery : IQuery<AllClientAssetsOutputModel>
-    {
-    }
 }

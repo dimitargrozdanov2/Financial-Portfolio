@@ -1,49 +1,43 @@
 ﻿using FinancialPortfolioSystem.Application.Common;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FinancialPortfolioSystem.Web.Extensions
+namespace FinancialPortfolioSystem.Web.Extensions;
+
+public static class ResultExtensions
 {
-    public static class ResultExtensions
+    public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<TData> resultTask)
     {
-        public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<TData> resultTask)
+        var result = await resultTask;
+
+        if (result == null)
         {
-            var result = await resultTask;
-
-            if (result == null)
-            {
-                return new NotFoundResult();
-            }
-
-            return result;
+            return new NotFoundResult();
         }
 
-        public static async Task<ActionResult> ToActionResult(this Task<Result> resultTask)
+        return result;
+    }
+
+    public static async Task<ActionResult> ToActionResult(this Task<Result> resultTask)
+    {
+        var result = await resultTask;
+
+        if (!result.Succeeded)
         {
-            var result = await resultTask;
-
-            if (!result.Succeeded)
-            {
-                return new BadRequestObjectResult(result.Errors);
-            }
-
-            return new OkResult();
+            return new BadRequestObjectResult(result.Errors);
         }
 
-        public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<Result<TData>> resultTask)
+        return new OkResult();
+    }
+
+    public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<Result<TData>> resultTask)
+    {
+        var result = await resultTask;
+
+        if (!result.Succeeded)
         {
-            var result = await resultTask;
-
-            if (!result.Succeeded)
-            {
-                return new BadRequestObjectResult(result.Errors);
-            }
-
-            return result.Data;
+            return new BadRequestObjectResult(result.Errors);
         }
+
+        return result.Data;
     }
 }

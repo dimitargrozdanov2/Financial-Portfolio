@@ -1,7 +1,8 @@
 ﻿using FinancialPortfolioSystem.Application.Exceptions;
 using FluentValidation;
-using FluentValidation.Results;
 using LiteBus.Commands.Abstractions;
+
+namespace FinancialPortfolioSystem.Application.Behaviours;
 
 public class ValidationPreHandler<TCommand> : ICommandPreHandler<TCommand>
     where TCommand : class, ICommand
