@@ -54,6 +54,10 @@ namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Queries
                 {
                     emptyResponse.CurrentMarketValue += asset.MarketPrice * clientAssets.FirstOrDefault(ca => ca.AssetId == asset.Id).Quantity;
                 }
+                if (emptyResponse.TotalInvestedAmount == 0)
+                {
+                    return emptyResponse;
+                }
                 emptyResponse.ROI =
                     ((emptyResponse.CurrentMarketValue - emptyResponse.TotalInvestedAmount) * 100
                     / (emptyResponse.TotalInvestedAmount)).ToString("0.##");

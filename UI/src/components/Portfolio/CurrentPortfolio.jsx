@@ -1,5 +1,9 @@
 export default function CurrentPortfolio({ holdings, onLoadHoldings, onBuyAsset, onSellAsset }) {
-  const items = holdings?.items ?? [];
+  // filter out zero-quantity assets
+  const items = (holdings?.items ?? []).filter(h => h.quantity > 0);
+
+  // recompute total value only from non-zero holdings
+  const totalValue = items.reduce((sum, h) => sum + h.assetTotalValue, 0);
 
   return (
     <section>
@@ -36,7 +40,7 @@ export default function CurrentPortfolio({ holdings, onLoadHoldings, onBuyAsset,
 
       {holdings && (
         <p style={{ marginTop: "10px" }}>
-          <strong>Total Portfolio Value:</strong> {holdings.totalValue}
+          <strong>Total Portfolio Value:</strong> {totalValue}
         </p>
       )}
     </section>

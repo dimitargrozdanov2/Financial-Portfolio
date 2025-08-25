@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/Identity/LoginForm";
 import Portfolio from "./components/Portfolio/Portfolio";          // user only
-import Metrics from "./components/Metrics";              // user only
-import AssetManagement from "./components/AssetManagement"; // admin only
+import Metrics from "./components/Portfolio/Metrics";              // user only
+import AssetManagement from "./components/Assets/AssetManagement"; // admin only
 import { ToastContainer, toast } from 'react-toastify';
 import { jwtDecode } from "jwt-decode";
 import { handleApiError } from "./utils/errorHandler";
+import RegisterForm from "./components/Identity/RegisterForm";
 
 function App() {
   const [token, setToken] = useState("");
@@ -22,6 +23,19 @@ function App() {
     headers: { Authorization: token ? `Bearer ${token}` : "" }
   });
 
+  async function register(name, email, password) {
+  try {
+    await axios.post("https://localhost:7081/api/identity/register", {
+      name,
+      email,
+      password
+    });
+    toast.success("🎉 Registration successful! Please log in.");
+    setView("client"); // redirect to login after registration
+  } catch (err) {
+    handleApiError(err, "Registration failed");
+  }
+}
   // --- Unified Login (user & admin) ---
   async function login(email, password) {
     try {
@@ -120,7 +134,7 @@ function App() {
       {/* Login screens */}
       {view === "client" && <LoginForm onLogin={login} userType="client"/>}
       {view === "admin" && <LoginForm onLogin={login} userType="admin" />} {/* reuse same form */}
-
+      {view === "register" && <RegisterForm onRegister={register} />}
       {/* After login */}
       {view === "app" && token && (
         <>
@@ -151,18 +165,20 @@ function App() {
       )}
 
       {/* Switcher (only on login screens) */}
-      {view !== "app" && (
-        <div style={{ marginTop: "20px" }}>
-          {view === "client" && (
-            <button onClick={() => setView("admin")}>
-              🔑 Switch to Admin Login
-            </button>
-          )}
-          {view === "admin" && (
-            <button onClick={() => setView("client")}>
-              👤 Switch to Client Login
-            </button>
-          )}
+{view !== "app" && (
+  <div style={{ marginTop: "20px" }}>
+    {view === "client" && (
+      <>
+        <button onClick={() => setView("admin")}>🔑 Switch to Admin Login</button>
+        <button onClick={() => setView("register")}>📝 Register</button>
+      </>
+    )}
+    {view === "admin" && (
+      <button onClick={() => setView("client")}>👤 Switch to Client Login</button>
+    )}
+    {view === "register" && (
+      <button onClick={() => setView("client")}>⬅️ Back to Login</button>
+    )}
         </div>
       )}
     </div>
