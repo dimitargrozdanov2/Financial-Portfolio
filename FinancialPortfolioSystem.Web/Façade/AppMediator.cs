@@ -23,14 +23,14 @@ public class AppMediator(ICommandMediator commandMediator, IQueryMediator queryM
     public async Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request)
         => await _queryMediator.QueryAsync(request).ToActionResult();
 
-    public Task<ActionResult> QueryAsync(IQuery<Result> request)
-        => _queryMediator.QueryAsync(request).ToActionResult();
+    public async Task<ActionResult> QueryAsync(IQuery<Result> request)
+        => await _queryMediator.QueryAsync(request).ToActionResult();
 
     public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request)
         => await _commandMediator.SendAsync(request).ToActionResult();
 
-    public Task<ActionResult> SendCommandAsync(ICommand<Result> request)
-        => _commandMediator.SendAsync(request).ToActionResult();
+    public async Task<ActionResult> SendCommandAsync(ICommand<Result> request)
+        => await _commandMediator.SendAsync(request).ToActionResult();
 
     public async Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<Result<TResult>> request)
         => await _commandMediator.SendAsync(request).ToActionResult();

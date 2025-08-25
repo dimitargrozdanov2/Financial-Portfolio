@@ -22,7 +22,7 @@ internal class GetPortfolioHoldingsQueryHandler : IQueryHandler<GetPortfolioHold
 
     public async Task<AllClientAssetsOutputModel> HandleAsync(GetPortfolioHoldingsQuery request, CancellationToken cancellationToken = default)
     {
-        var portfolio = await _clientPortfolioRepository.GetByUserId(_currentUser.UserId);
+        var portfolio = await _clientPortfolioRepository.GetByUserIdAsync(_currentUser.UserId);
         var emptyResponse = new AllClientAssetsOutputModel()
         {
             Items = new List<ClientAssetOutputModel>(),
@@ -37,7 +37,7 @@ internal class GetPortfolioHoldingsQueryHandler : IQueryHandler<GetPortfolioHold
             var clientAssets = portfolio.ClientAssets;
             var clientAssetsIds = clientAssets.Select(x => x.AssetId);
             var assetsMetaData = await _assetRepository
-                .GetAll(x => clientAssetsIds.Contains(x.Id), cancellationToken);
+                .GetAllAsync(x => clientAssetsIds.Contains(x.Id), cancellationToken);
             var assets = assetsMetaData.Items;
             foreach (var clientAsset in clientAssets)
             {

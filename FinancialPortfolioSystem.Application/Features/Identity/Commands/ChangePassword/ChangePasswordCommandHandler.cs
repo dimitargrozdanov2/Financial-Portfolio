@@ -17,7 +17,7 @@ public class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordComman
     }
 
     public async Task<Result> HandleAsync(ChangePasswordCommand request, CancellationToken cancellationToken = default)
-        => await _identity.ChangePassword(new ChangePasswordInputModel(
+        => await _identity.ChangePasswordAsync(new ChangePasswordInputModel(
             _currentUser.UserId,
             request.CurrentPassword,
             request.NewPassword));

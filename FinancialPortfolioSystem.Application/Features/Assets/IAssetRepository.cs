@@ -7,8 +7,8 @@ namespace FinancialPortfolioSystem.Application.Features.Assets;
 
 public interface IAssetRepository : IAggregateRoot
 {
-    Task<AllAssetsOutputModel> GetAll(Expression<Func<Asset, bool>> func = default, CancellationToken cancellationToken = default);
+    Task<AllAssetsOutputModel> GetAllAsync(Expression<Func<Asset, bool>> func = default, CancellationToken cancellationToken = default);
     Task CreateAsync(Asset asset, CancellationToken cancellationToken = default);
-    Task<Asset> GetById(int id, CancellationToken cancellationToken = default);
+    Task<Asset> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task UpdateAsync(Asset asset, CancellationToken cancellationToken = default);
 }

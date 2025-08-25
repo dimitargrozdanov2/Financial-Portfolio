@@ -28,14 +28,14 @@ public class BuyClientAssetCommandHandler : ICommandHandler<BuyClientAssetComman
 
     public async Task<Result> HandleAsync(BuyClientAssetCommand request, CancellationToken cancellationToken = default)
     {
-        var asset = await _assetRepository.GetById(request.AssetId, cancellationToken);
+        var asset = await _assetRepository.GetByIdAsync(request.AssetId, cancellationToken);
 
         if (asset == null)
         {
             return Result.Failure(new[] { "Asset not found!" });
         }
 
-        var portfolio = await _clientPortfolioRepository.GetByUserId(_currentUser.UserId);
+        var portfolio = await _clientPortfolioRepository.GetByUserIdAsync(_currentUser.UserId);
 
         if (portfolio == null)
         {

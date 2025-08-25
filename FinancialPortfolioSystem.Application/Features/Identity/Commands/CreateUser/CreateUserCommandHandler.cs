@@ -9,7 +9,7 @@ internal class CreateUserCommandHandler(IIdentity identity) : ICommandHandler<Cr
 
     public async Task<Result> HandleAsync(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
-        var result = await _identity.Register(request);
+        var result = await _identity.RegisterAsync(request);
 
         return result;
     }

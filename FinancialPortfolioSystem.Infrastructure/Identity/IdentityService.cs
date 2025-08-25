@@ -25,7 +25,7 @@ public class IdentityService(
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
     private readonly ApplicationSettings _applicationSettings = applicationSettings.Value;
 
-    public async Task<Result> Register(UserInputModel userInput)
+    public async Task<Result> RegisterAsync(UserInputModel userInput)
     {
         var user = new User(userInput.Email);
         IdentityResult createResult = null;
@@ -73,7 +73,7 @@ public class IdentityService(
         }
     }
 
-    public async Task<Result<LoginOutputModel>> Login(UserInputModel userInput)
+    public async Task<Result<LoginOutputModel>> LoginAsync(UserInputModel userInput)
     {
         var user = await _userManager.FindByEmailAsync(userInput.Email);
         if (user == null)
@@ -128,7 +128,7 @@ public class IdentityService(
         return encryptedToken;
     }
 
-    public async Task<Result> ChangePassword(ChangePasswordInputModel changePasswordInput)
+    public async Task<Result> ChangePasswordAsync(ChangePasswordInputModel changePasswordInput)
     {
         var user = await _userManager.FindByIdAsync(changePasswordInput.UserId);
 

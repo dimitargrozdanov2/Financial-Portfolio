@@ -15,7 +15,7 @@ public class UpdateAssetCommandHandler : ICommandHandler<UpdateAssetCommand, Res
 
     async Task<Result> IAsyncMessageHandler<UpdateAssetCommand, Result>.HandleAsync(UpdateAssetCommand request, CancellationToken cancellationToken)
     {
-        var asset = await _assetRepository.GetById(request.Id, cancellationToken);
+        var asset = await _assetRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (asset == null)
         {

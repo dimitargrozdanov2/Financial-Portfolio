@@ -12,7 +12,7 @@ internal class AssetRepository(IMapper mapper, FinancePortfolioDbContext db) : I
     private readonly IMapper _mapper = mapper;
     private readonly FinancePortfolioDbContext _db = db;
 
-    public async Task<AllAssetsOutputModel> GetAll(Expression<Func<Asset,bool>> func = null, CancellationToken cancellationToken = default)
+    public async Task<AllAssetsOutputModel> GetAllAsync(Expression<Func<Asset,bool>> func = null, CancellationToken cancellationToken = default)
     {
         var dataModels = func is null
             ? await _db.Assets.ToListAsync(cancellationToken)
@@ -25,7 +25,7 @@ internal class AssetRepository(IMapper mapper, FinancePortfolioDbContext db) : I
         };
     }
 
-    public async Task<Asset> GetById(int id, CancellationToken cancellationToken = default)
+    public async Task<Asset> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _db.Assets.Where(a => a.Id == id).FirstOrDefaultAsync(cancellationToken);
     }

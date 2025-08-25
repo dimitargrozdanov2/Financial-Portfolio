@@ -22,7 +22,7 @@ internal class GetPortfolioMetricsQueryHandler : IQueryHandler<GetPortfolioMetri
 
     public async Task<PortfolioMetricsOutputModel> HandleAsync(GetPortfolioMetricsQuery message, CancellationToken cancellationToken = default)
     {
-        var portfolio = await _clientPortfolioRepository.GetByUserId(_currentUser.UserId);
+        var portfolio = await _clientPortfolioRepository.GetByUserIdAsync(_currentUser.UserId);
         var emptyResponse = new PortfolioMetricsOutputModel()
         {
             CurrentMarketValue = 0,
@@ -38,7 +38,7 @@ internal class GetPortfolioMetricsQueryHandler : IQueryHandler<GetPortfolioMetri
             var clientAssets = portfolio.ClientAssets;
             var clientAssetsIds = clientAssets.Select(x => x.AssetId);
             var assetsMetaData = await _assetRepository
-                .GetAll(x => clientAssetsIds.Contains(x.Id), cancellationToken);
+                .GetAllAsync(x => clientAssetsIds.Contains(x.Id), cancellationToken);
             var assets = assetsMetaData.Items;
             foreach (var clientAsset in clientAssets)
             {

@@ -8,7 +8,7 @@ internal class ClientPortfolioRepository(FinancePortfolioDbContext db) : IClient
 {
     private readonly FinancePortfolioDbContext _data = db;
 
-    public async Task<ClientPortfolio> GetByUserId(string userId, CancellationToken cancellationToken = default)
+    public async Task<ClientPortfolio> GetByUserIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await _data.ClientPortfolios
             .Include(cp => cp.ClientAssets)

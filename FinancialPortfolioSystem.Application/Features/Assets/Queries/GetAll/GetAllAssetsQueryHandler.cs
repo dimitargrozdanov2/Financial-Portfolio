@@ -13,6 +13,6 @@ public class GetAllAssetsQueryHandler : IQueryHandler<GetAllAssetsQuery, AllAsse
 
     public async Task<AllAssetsOutputModel> HandleAsync(GetAllAssetsQuery message, CancellationToken cancellationToken = default)
     {
-        return await _assetRepository.GetAll(a => !a.IsDeleted);
+        return await _assetRepository.GetAllAsync(a => !a.IsDeleted);
     }
 }

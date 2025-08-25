@@ -7,9 +7,9 @@ namespace FinancialPortfolioSystem.Application.Features.Identity;
 
 public interface IIdentity
 {
-    Task<Result> Register(UserInputModel userInput);
+    Task<Result> RegisterAsync(UserInputModel userInput);
 
-    Task<Result<LoginOutputModel>> Login(UserInputModel userInput);
+    Task<Result<LoginOutputModel>> LoginAsync(UserInputModel userInput);
 
-    Task<Result> ChangePassword(ChangePasswordInputModel changePasswordInput);
+    Task<Result> ChangePasswordAsync(ChangePasswordInputModel changePasswordInput);
 }

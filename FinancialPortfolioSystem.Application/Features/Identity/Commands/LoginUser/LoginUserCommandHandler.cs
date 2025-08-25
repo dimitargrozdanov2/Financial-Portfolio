@@ -12,7 +12,7 @@ public class LoginUserCommandHandler(
         LoginUserCommand request,
         CancellationToken cancellationToken)
     {
-        var result = await _identity.Login(request);
+        var result = await _identity.LoginAsync(request);
 
         if (!result.Succeeded)
         {
