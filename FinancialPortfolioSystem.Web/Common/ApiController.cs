@@ -8,18 +8,12 @@ namespace FinancialPortfolioSystem.Web.Common;
 
 [ApiController]
 [Route("/api/[controller]")]
-public abstract class ApiController : ControllerBase
+public abstract class ApiController(IAppMediator mediator) : ControllerBase
 {
     public const string PathSeparator = "/";
     public const string Id = "{id}";
 
-    private readonly IAppMediator _mediator;
-
-    protected ApiController(IAppMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
+    private readonly IAppMediator _mediator = mediator;
 
     protected async Task<ActionResult<TResult>> SendAsync<TResult>(IQuery<TResult> request)
         => await _mediator.QueryAsync(request);

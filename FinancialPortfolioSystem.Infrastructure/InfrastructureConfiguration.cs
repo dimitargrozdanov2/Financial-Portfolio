@@ -52,19 +52,14 @@ public static class InfrastructureConfiguration
             
             .AddIdentityCore<User>(options =>
             {
-                // Password settings
-                options.Password.RequiredLength = 8;          // Minimum 8 characters
-                options.Password.RequireDigit = true;         // At least one number
-                options.Password.RequireLowercase = true;     // At least one lowercase
-                options.Password.RequireUppercase = true;     // At least one uppercase
-                options.Password.RequireNonAlphanumeric = true; // At least one symbol (!, @, #, etc.)
-
-                // Lockout settings (optional but recommended)
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
-
-                // User settings (optional)
                 options.User.RequireUniqueEmail = true;
             })
             .AddRoles<IdentityRole>()
@@ -84,7 +79,7 @@ public static class InfrastructureConfiguration
             })
             .AddJwtBearer(bearer =>
             {
-                bearer.RequireHttpsMetadata = false; //this should be true in production!
+                bearer.RequireHttpsMetadata = false;
                 bearer.SaveToken = true;
                 bearer.TokenValidationParameters = new TokenValidationParameters
                 {

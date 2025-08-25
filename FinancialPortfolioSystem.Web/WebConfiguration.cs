@@ -20,8 +20,6 @@ public static class WebConfiguration
             options.SuppressModelStateInvalidFilter = true;
         });
 
-        //services.AddValidatorsFromAssemblyContaining<Result>();
-
         return services;
     }
 }

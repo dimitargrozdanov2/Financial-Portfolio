@@ -1,9 +1,6 @@
 ﻿namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.LoginUser;
 
-public class LoginOutputModel
+public class LoginOutputModel(string token)
 {
-    public LoginOutputModel(string token)
-        => Token = token;
-
-    public string Token { get; }
+    public string Token { get; } = token;
 }

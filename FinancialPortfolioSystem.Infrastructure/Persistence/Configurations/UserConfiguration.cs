@@ -13,7 +13,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .HasKey(u => u.Id);
 
         builder
-            .Property(u => u.Email) // add regex validation for email
+            .Property(u => u.Email)
             .IsRequired();
 
         builder

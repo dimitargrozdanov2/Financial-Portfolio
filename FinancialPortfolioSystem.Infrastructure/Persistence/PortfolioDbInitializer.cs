@@ -4,17 +4,11 @@ using System.Reflection;
 
 namespace FinancialPortfolioSystem.Infrastructure.Persistence;
 
-internal class PortfolioDbInitializer : IPortfolioDbInitializer
+internal class PortfolioDbInitializer(
+    FinancePortfolioDbContext db, IEnumerable<IInitialData> initialDataProviders) : IPortfolioDbInitializer
 {
-    private readonly FinancePortfolioDbContext _db;
-    private readonly IEnumerable<IInitialData> _initialDataProviders;
-
-    public PortfolioDbInitializer(
-        FinancePortfolioDbContext db, IEnumerable<IInitialData> initialDataProviders)
-    {
-        _db = db;
-        _initialDataProviders = initialDataProviders;
-    }
+    private readonly FinancePortfolioDbContext _db = db;
+    private readonly IEnumerable<IInitialData> _initialDataProviders = initialDataProviders;
 
     public void Initialize()
     {

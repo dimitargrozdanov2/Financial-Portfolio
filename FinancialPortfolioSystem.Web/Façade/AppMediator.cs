@@ -15,16 +15,10 @@ public interface IAppMediator
     Task<ActionResult<TResult>> SendCommandAsync<TResult>(ICommand<TResult> request);
 }
 
-public class AppMediator : IAppMediator
+public class AppMediator(ICommandMediator commandMediator, IQueryMediator queryMediator) : IAppMediator
 {
-    private readonly ICommandMediator _commandMediator;
-    private readonly IQueryMediator _queryMediator;
-
-    public AppMediator(ICommandMediator commandMediator, IQueryMediator queryMediator)
-    {
-        _commandMediator = commandMediator;
-        _queryMediator = queryMediator;
-    }
+    private readonly ICommandMediator _commandMediator = commandMediator;
+    private readonly IQueryMediator _queryMediator = queryMediator;
 
     public async Task<ActionResult<TResult>> QueryAsync<TResult>(IQuery<TResult> request)
         => await _queryMediator.QueryAsync(request).ToActionResult();

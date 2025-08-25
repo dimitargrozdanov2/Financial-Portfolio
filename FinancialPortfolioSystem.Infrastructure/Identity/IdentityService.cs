@@ -14,23 +14,16 @@ using static FinancialPortfolioSystem.Infrastructure.Identity.IdentityConstants.
 
 namespace FinancialPortfolioSystem.Infrastructure.Identity;
 
-public class IdentityService : IIdentity
+public class IdentityService(
+    UserManager<User> userManager,
+    RoleManager<IdentityRole> roleManager,
+    IOptions<ApplicationSettings> applicationSettings) : IIdentity
 {
     private const string InvalidErrorMessage = "Invalid credentials.";
 
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ApplicationSettings _applicationSettings;
-
-    public IdentityService(
-        UserManager<User> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IOptions<ApplicationSettings> applicationSettings)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-        _applicationSettings = applicationSettings.Value;
-    }
+    private readonly UserManager<User> _userManager = userManager;
+    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly ApplicationSettings _applicationSettings = applicationSettings.Value;
 
     public async Task<Result> Register(UserInputModel userInput)
     {

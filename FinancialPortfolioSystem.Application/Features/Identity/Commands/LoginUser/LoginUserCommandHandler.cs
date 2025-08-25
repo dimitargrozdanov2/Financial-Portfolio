@@ -3,15 +3,10 @@ using LiteBus.Commands.Abstractions;
 
 namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.LoginUser;
 
-public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<LoginOutputModel>>
+public class LoginUserCommandHandler(
+    IIdentity identity) : ICommandHandler<LoginUserCommand, Result<LoginOutputModel>>
 {
-    private readonly IIdentity _identity;
-
-    public LoginUserCommandHandler(
-        IIdentity identity)
-    {
-        _identity = identity;
-    }
+    private readonly IIdentity _identity = identity;
 
     public async Task<Result<LoginOutputModel>> HandleAsync(
         LoginUserCommand request,

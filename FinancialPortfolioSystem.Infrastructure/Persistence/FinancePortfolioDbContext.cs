@@ -7,14 +7,8 @@ using System.Reflection;
 
 namespace FinancialPortfolioSystem.Infrastructure.Persistence;
 
-internal class FinancePortfolioDbContext : IdentityDbContext<User>
+internal class FinancePortfolioDbContext(DbContextOptions<FinancePortfolioDbContext> options) : IdentityDbContext<User>(options)
 {
-
-    public FinancePortfolioDbContext(DbContextOptions<FinancePortfolioDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Asset> Assets { get; set; }
     public DbSet<ClientAsset> ClientAssets { get; set; }
     public DbSet<ClientPortfolio> ClientPortfolios { get; set; }

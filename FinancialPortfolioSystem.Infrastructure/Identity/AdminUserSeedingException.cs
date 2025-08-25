@@ -1,6 +1,5 @@
 ﻿namespace FinancialPortfolioSystem.Infrastructure.Identity;
 
-public class AdminUserSeedingException : Exception
+public class AdminUserSeedingException(string message) : Exception(message)
 {
-    public AdminUserSeedingException(string message) : base(message) { }
 }

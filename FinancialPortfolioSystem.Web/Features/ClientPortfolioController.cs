@@ -9,50 +9,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialPortfolioSystem.Web.Features;
 
-public class ClientPortfolioController : ApiController
+public class ClientPortfolioController(IAppMediator mediator) : ApiController(mediator)
 {
-    public ClientPortfolioController(IAppMediator mediator) : base(mediator)
-    {
-    }
-
-    /// <summary>
-    /// Adds an asset to a client portfolio or updates its existing quantity.
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("buy")]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult> Buy(BuyClientAssetCommand command)
         => await SendAsync(command);
 
-    /// <summary>
-    /// Sells an asset from a client portfolio.
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
     [HttpPost]
     [Route("sell")]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult> Sell(SellClientAssetCommand command)
         => await SendAsync(command);
 
-    /// <summary>
-    /// Shows list of holdings with total value
-    /// </summary>
-    /// <param name="query"></param>
-    /// <returns></returns>
     [HttpGet]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult<AllClientAssetsOutputModel>> Holdings([FromQuery] GetPortfolioHoldingsQuery query)
          => await SendAsync(query);
 
-
-    /// <summary>
-    /// Shows Portfolio Metrics - Total invested amount, Current market value and Return on Investment(ROI)
-    /// </summary>
-    /// <param name="query"></param>
-    /// <returns></returns>
     [HttpGet]
     [Route("metrics")]
     [Authorize(Roles = "Client")]

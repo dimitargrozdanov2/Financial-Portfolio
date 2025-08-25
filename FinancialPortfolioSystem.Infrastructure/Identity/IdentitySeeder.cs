@@ -18,7 +18,7 @@ public static class IdentitySeeder
             await roleManager.CreateAsync(new IdentityRole(adminRole));
         }
         var adminEmail = configuration[AdminEmailConfiguration] ?? AdminDefaultEmail;
-        var adminPassword = configuration[AdminPasswordConfiguration] ?? AdminDefaultPassword;// choose strong password or from config
+        var adminPassword = configuration[AdminPasswordConfiguration] ?? AdminDefaultPassword;
 
         var user = await userManager.FindByEmailAsync(adminEmail);
         if (user == null)

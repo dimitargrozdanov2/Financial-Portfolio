@@ -1,14 +1,8 @@
 ﻿namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.LoginUser;
 
-public class LoginSuccessModel
+public class LoginSuccessModel(string userId, string token)
 {
-    public LoginSuccessModel(string userId, string token)
-    {
-        UserId = userId;
-        Token = token;
-    }
+    public string UserId { get; } = userId;
 
-    public string UserId { get; }
-
-    public string Token { get; }
+    public string Token { get; } = token;
 }

@@ -7,7 +7,7 @@ namespace FinancialPortfolioSystem.Domain.Models.Client;
 public class ClientPortfolio : Entity<int>, IAggregateRoot
 {
     private readonly HashSet<ClientAsset> _clientAssets = new HashSet<ClientAsset>();
-    private readonly List<ClientTransaction> _clientTransactions = new List<ClientTransaction>(); // we may need them in order
+    private readonly List<ClientTransaction> _clientTransactions = new List<ClientTransaction>();
 
     internal ClientPortfolio(string userId)
     {

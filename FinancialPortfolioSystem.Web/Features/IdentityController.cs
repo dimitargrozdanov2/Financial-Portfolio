@@ -8,11 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialPortfolioSystem.Web.Features;
 
-public class IdentityController : ApiController
+public class IdentityController(IAppMediator mediator) : ApiController(mediator)
 {
-
-    public IdentityController(IAppMediator mediator) : base(mediator) { }
-
     [HttpPost]
     [Route(nameof(Register))]
     public async Task<ActionResult> Register(
