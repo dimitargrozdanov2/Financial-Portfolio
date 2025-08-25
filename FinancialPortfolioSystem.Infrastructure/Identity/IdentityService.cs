@@ -82,13 +82,13 @@ public class IdentityService : IIdentity
 
     public async Task<Result<LoginOutputModel>> Login(UserInputModel userInput)
     {
-        var user = await this._userManager.FindByEmailAsync(userInput.Email);
+        var user = await _userManager.FindByEmailAsync(userInput.Email);
         if (user == null)
         {
             return Result<LoginOutputModel>.Failure(new[] { InvalidErrorMessage });
         }
 
-        var passwordValid = await this._userManager.CheckPasswordAsync(user, userInput.Password);
+        var passwordValid = await _userManager.CheckPasswordAsync(user, userInput.Password);
         if (!passwordValid)
         {
             return Result<LoginOutputModel>.Failure(new[] { InvalidErrorMessage });
@@ -96,7 +96,7 @@ public class IdentityService : IIdentity
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        var token = this.GenerateJwtToken(
+        var token = GenerateJwtToken(
             user.Id,
             user.Email,
             roles);

@@ -6,5 +6,5 @@ namespace FinancialPortfolioSystem.Application.Features.Assets.Commands.Update;
 
 internal class UpdateAssetCommandValidator : AbstractValidator<CreateAssetCommand>
 {
-    public UpdateAssetCommandValidator() => this.Include(new AssetCommandValidator<CreateAssetCommand>());
+    public UpdateAssetCommandValidator() => Include(new AssetCommandValidator<CreateAssetCommand>());
 }

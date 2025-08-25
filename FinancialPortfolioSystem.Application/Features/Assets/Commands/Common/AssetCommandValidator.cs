@@ -9,17 +9,17 @@ internal class AssetCommandValidator<TCommand> : AbstractValidator<AssetCommand<
 {
     public AssetCommandValidator()
     {
-        this.RuleFor(c => c.TickerSymbol)
+        RuleFor(c => c.TickerSymbol)
             .MinimumLength(MinTickerSymbolLength)
             .MaximumLength(MaxTickerSymbolLength)
             .NotEmpty();
 
-        this.RuleFor(c => c.Description)
+        RuleFor(c => c.Description)
             .MinimumLength(MinDescriptionLength)
             .MaximumLength(MaxDescriptionLength)
             .NotEmpty();
 
-        this.RuleFor(c => c.MarketPrice)
+        RuleFor(c => c.MarketPrice)
             .GreaterThan(Zero)
             .NotEmpty();        
     }

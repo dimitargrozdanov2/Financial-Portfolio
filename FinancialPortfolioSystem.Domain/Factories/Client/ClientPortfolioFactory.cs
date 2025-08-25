@@ -5,25 +5,25 @@ namespace FinancialPortfolioSystem.Domain.Factories.Client;
 
 public class ClientPortfolioFactory : IClientPortfolioFactory
 {
-    private string clientId = default;
+    private string _clientId = default;
 
-    private bool clientIdSet = false;
+    private bool _clientIdSet = false;
 
     public ClientPortfolioFactory WithClientId(string clientId)
     {
-        this.clientId = clientId;
-        this.clientIdSet = true;
+        _clientId = clientId;
+        _clientIdSet = true;
         return this;
     }
 
     public ClientPortfolio Build()
     {
-        if (!this.clientIdSet)
+        if (!_clientIdSet)
         {
             throw new InvalidClientPortfolioException(
-                $"{nameof(this.clientId)} must have a value.");
+                $"{nameof(_clientId)} must have a value.");
         }
 
-        return new ClientPortfolio(this.clientId);
+        return new ClientPortfolio(_clientId);
     }
 }

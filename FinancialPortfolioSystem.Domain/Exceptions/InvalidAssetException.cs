@@ -6,5 +6,5 @@ public class InvalidAssetException : BaseDomainException
     { 
     }
 
-    public InvalidAssetException(string message) => this.Error = message;
+    public InvalidAssetException(string message) => Error = message;
 }

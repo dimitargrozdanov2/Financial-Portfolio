@@ -10,9 +10,9 @@ public class ClientAsset : Entity<int>
     {
         Validate(quantity, averageCost);
 
-        this.AssetId = assetId;
-        this.Quantity = quantity;
-        this.AverageCost = averageCost;
+        AssetId = assetId;
+        Quantity = quantity;
+        AverageCost = averageCost;
     }
 
     public int AssetId { get; }
@@ -25,13 +25,13 @@ public class ClientAsset : Entity<int>
             quantity,
             Zero,
             int.MaxValue,
-            nameof(this.Quantity));
+            nameof(Quantity));
 
         Guard.AgainstOutOfRange<InvalidClientAssetException>(
             averageCost,
             Zero,
             decimal.MaxValue,
-            nameof(this.AverageCost));
+            nameof(AverageCost));
     }
 
     internal void ApplyTransaction(ClientTransaction transaction)

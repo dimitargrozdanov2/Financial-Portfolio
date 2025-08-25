@@ -1,8 +1,6 @@
 ﻿namespace FinancialPortfolioSystem.Application;
 
-public class ApplicationSettings
+public class ApplicationSettings(string secret = default!)
 {
-    public ApplicationSettings() => this.Secret = default!;
-
-    public string Secret { get; private set; }
+    public string Secret { get; private set; } = secret;
 }

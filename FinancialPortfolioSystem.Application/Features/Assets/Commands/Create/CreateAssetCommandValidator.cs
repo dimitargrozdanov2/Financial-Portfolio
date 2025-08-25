@@ -9,10 +9,10 @@ public class CreateAssetCommandValidator : AbstractValidator<CreateAssetCommand>
 {
     public CreateAssetCommandValidator()
     {
-        this.RuleFor(c => c.AssetType)
+        RuleFor(c => c.AssetType)
             .Must(Enumeration.HasValue<AssetType>)
             .WithMessage("'Asset type' is not valid.");
 
-        this.Include(new AssetCommandValidator<CreateAssetCommand>());
+        Include(new AssetCommandValidator<CreateAssetCommand>());
     }
 }

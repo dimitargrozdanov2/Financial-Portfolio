@@ -25,7 +25,7 @@ internal class SellClientAssetCommandHandler : ICommandHandler<SellClientAssetCo
     public async Task<Result> HandleAsync(SellClientAssetCommand request, CancellationToken cancellationToken = default)
     {
         List<string> errors = new List<string>();
-        var asset = await this._assetRepository.GetById(request.AssetId, cancellationToken);
+        var asset = await _assetRepository.GetById(request.AssetId, cancellationToken);
 
         if (asset == null)
         {

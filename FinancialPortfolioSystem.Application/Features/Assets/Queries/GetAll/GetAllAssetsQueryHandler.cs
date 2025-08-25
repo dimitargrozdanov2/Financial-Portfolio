@@ -8,11 +8,11 @@ public class GetAllAssetsQueryHandler : IQueryHandler<GetAllAssetsQuery, AllAsse
 
     public GetAllAssetsQueryHandler(IAssetRepository assetRepository)
     {
-        this._assetRepository = assetRepository;
+        _assetRepository = assetRepository;
     }
 
     public async Task<AllAssetsOutputModel> HandleAsync(GetAllAssetsQuery message, CancellationToken cancellationToken = default)
     {
-        return await this._assetRepository.GetAll(a => !a.IsDeleted);
+        return await _assetRepository.GetAll(a => !a.IsDeleted);
     }
 }

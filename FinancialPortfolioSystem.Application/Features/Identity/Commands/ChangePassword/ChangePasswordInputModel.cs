@@ -7,9 +7,9 @@ public class ChangePasswordInputModel
         string currentPassword,
         string newPassword)
     {
-        this.UserId = userId;
-        this.CurrentPassword = currentPassword;
-        this.NewPassword = newPassword;
+        UserId = userId;
+        CurrentPassword = currentPassword;
+        NewPassword = newPassword;
     }
 
     public string UserId { get; }

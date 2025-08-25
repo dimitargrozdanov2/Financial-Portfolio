@@ -6,5 +6,5 @@ public class InvalidClientPortfolioException : BaseDomainException
     {
     }
 
-    public InvalidClientPortfolioException(string message) => this.Error = message;
+    public InvalidClientPortfolioException(string message) => Error = message;
 }

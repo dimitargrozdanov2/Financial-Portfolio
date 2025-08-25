@@ -14,7 +14,7 @@ internal class DeleteAssetCommandHandler : ICommandHandler<DeleteAssetCommand, R
 
     public async Task<Result> HandleAsync(DeleteAssetCommand request, CancellationToken cancellationToken = default)
     {
-        var asset = await this._assetRepository.GetById(request.Id, cancellationToken);
+        var asset = await _assetRepository.GetById(request.Id, cancellationToken);
 
         if (asset == null)
         {

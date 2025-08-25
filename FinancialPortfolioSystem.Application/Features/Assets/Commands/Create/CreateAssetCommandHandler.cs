@@ -26,7 +26,7 @@ public class CreateAssetCommandHandler : ICommandHandler<CreateAssetCommand, Cre
             .WithDescription(request.Description)
             .WithMarketPrice(request.MarketPrice)
             .Build();
-        await this._assetRepository.CreateAsync(asset, cancellationToken);
+        await _assetRepository.CreateAsync(asset, cancellationToken);
 
         return new CreatedAssetOutputModel(asset.Id);
     }

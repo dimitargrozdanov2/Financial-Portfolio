@@ -6,5 +6,5 @@ internal class InvalidCurrencyException : BaseDomainException
     {
     }
 
-    public InvalidCurrencyException(string message) => this.Error = message;
+    public InvalidCurrencyException(string message) => Error = message;
 }

@@ -24,7 +24,7 @@ public class AssetsController : ApiController
     [HttpGet]
     [Authorize(Roles = "Admin,Client")]
     public async Task<ActionResult<AllAssetsOutputModel>> GetAll([FromQuery] GetAllAssetsQuery query)
-        => await this.SendAsync(query);
+        => await SendAsync(query);
 
     /// <summary>
     /// Creates a new asset.
@@ -35,7 +35,7 @@ public class AssetsController : ApiController
     [HttpPost]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<CreatedAssetOutputModel>> Create(CreateAssetCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 
     /// <summary>
     /// Updates an asset. Asset type cannot be changed.
@@ -47,7 +47,7 @@ public class AssetsController : ApiController
     [Route(Id)]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Edit(int id, UpdateAssetCommand command)
-        => await this.SendAsync(command.SetId(id));
+        => await SendAsync(command.SetId(id));
 
     /// <summary>
     /// Soft deletes an asset.
@@ -59,5 +59,5 @@ public class AssetsController : ApiController
     [Route(Id)]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> Remove(int id, [FromRoute] DeleteAssetCommand command)
-        => await this.SendAsync(command.SetId(id));
+        => await SendAsync(command.SetId(id));
 }

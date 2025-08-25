@@ -8,13 +8,13 @@ public class ClientTransaction : Entity<int>
 {
     internal ClientTransaction(int assetId, ClientTransactionType type, int quantity, decimal pricePerUnit)
     {
-        this.Validate(type, quantity, pricePerUnit);
+        Validate(type, quantity, pricePerUnit);
 
-        this.AssetId = assetId;
-        this.Type = type;
-        this.Quantity = quantity;
-        this.PricePerUnit = pricePerUnit;
-        this.Timestamp = DateTime.UtcNow;
+        AssetId = assetId;
+        Type = type;
+        Quantity = quantity;
+        PricePerUnit = pricePerUnit;
+        Timestamp = DateTime.UtcNow;
     }
 
     public int AssetId { get; private set; }
@@ -27,7 +27,7 @@ public class ClientTransaction : Entity<int>
     {
         Guard.AgainstDefault<InvalidClientTransactionException>(
             type,
-            nameof(this.Type));
+            nameof(Type));
 
         Guard.AgainstOutOfRange<InvalidClientTransactionException>(
             quantity,

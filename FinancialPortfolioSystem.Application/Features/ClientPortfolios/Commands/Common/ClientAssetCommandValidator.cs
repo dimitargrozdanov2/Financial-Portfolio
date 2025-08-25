@@ -8,7 +8,7 @@ public class ClientAssetCommandValidator<TCommand> : AbstractValidator<ClientAss
 {
     public ClientAssetCommandValidator()
     {
-        this.RuleFor(c => c.Quantity)
+        RuleFor(c => c.Quantity)
             .GreaterThan(Zero)
             .NotEmpty();
     }

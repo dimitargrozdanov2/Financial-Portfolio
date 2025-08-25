@@ -6,5 +6,5 @@ namespace FinancialPortfolioSystem.Application.Features.ClientPortfolios.Command
 
 internal class SellClientAssetCommandValidator : AbstractValidator<SellClientAssetCommand>
 {
-    public SellClientAssetCommandValidator() => this.Include(new ClientAssetCommandValidator<SellClientAssetCommand>());
+    public SellClientAssetCommandValidator() => Include(new ClientAssetCommandValidator<SellClientAssetCommand>());
 }

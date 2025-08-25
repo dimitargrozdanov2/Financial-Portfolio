@@ -9,13 +9,13 @@ public class Asset : Entity<int>, IAggregateRoot
 {
     internal Asset(AssetType assetType, string tickerSymbol, string name, string description, decimal marketPrice)
     {
-        this.Validate(assetType, tickerSymbol, name, description, marketPrice);
+        Validate(assetType, tickerSymbol, name, description, marketPrice);
 
-        this.AssetType = assetType;
-        this.TickerSymbol = tickerSymbol;
-        this.Name = name;
-        this.Description = description;
-        this.MarketPrice = marketPrice;
+        AssetType = assetType;
+        TickerSymbol = tickerSymbol;
+        Name = name;
+        Description = description;
+        MarketPrice = marketPrice;
     }
 
     public AssetType AssetType { get; }
@@ -32,29 +32,29 @@ public class Asset : Entity<int>, IAggregateRoot
 
     public Asset UpdateTickerSymbol(string tickerSymbol)
     {
-        this.ValidateTickerSymbol(tickerSymbol);
-        this.TickerSymbol = tickerSymbol;
+        ValidateTickerSymbol(tickerSymbol);
+        TickerSymbol = tickerSymbol;
         return this;
     }
 
     public Asset UpdateName(string name)
     {
-        this.ValidateName(name);
-        this.Name = name;
+        ValidateName(name);
+        Name = name;
         return this;
     }
 
     public Asset UpdateDescription(string description)
     {
-        this.ValidateDescription(description);
-        this.Description = description;
+        ValidateDescription(description);
+        Description = description;
         return this;
     }
 
     public Asset UpdateMarketPrice(decimal marketPrice)
     {
-        this.ValidateMarketPrice(marketPrice);
-        this.MarketPrice = marketPrice;
+        ValidateMarketPrice(marketPrice);
+        MarketPrice = marketPrice;
         return this;
     }
 
@@ -71,7 +71,7 @@ public class Asset : Entity<int>, IAggregateRoot
     {
         Guard.AgainstDefault<InvalidAssetException>(
             assetType,
-            nameof(this.AssetType));
+            nameof(AssetType));
     }
 
     private void ValidateTickerSymbol(string tickerSymbol)
@@ -80,7 +80,7 @@ public class Asset : Entity<int>, IAggregateRoot
             tickerSymbol,
             MinTickerSymbolLength,
             MaxTickerSymbolLength,
-            nameof(this.TickerSymbol));
+            nameof(TickerSymbol));
     }
 
     private void ValidateName(string name)
@@ -89,7 +89,7 @@ public class Asset : Entity<int>, IAggregateRoot
             name,
             MinNameLength,
             MaxNameLength,
-            nameof(this.Name));
+            nameof(Name));
     }
 
     private void ValidateDescription(string description)
@@ -98,14 +98,14 @@ public class Asset : Entity<int>, IAggregateRoot
             description,
             MinDescriptionLength,
             MaxDescriptionLength,
-            nameof(this.Description));
+            nameof(Description));
     }
 
     private void ValidateMarketPrice(decimal marketPrice)
     {
         Guard.AgainstZeroOrNegative<InvalidAssetException>(
             marketPrice,
-            nameof(this.MarketPrice));
+            nameof(MarketPrice));
     }
 
     public void MarkAsDeleted() => IsDeleted = true;

@@ -5,70 +5,70 @@ namespace FinancialPortfolioSystem.Domain.Factories.Assets;
 
 public class AssetFactory : IAssetFactory
 {
-    private AssetType assetType = default;
-    private string tickerSymbol = default;
-    private string name = default;
-    private string description = default;
-    private decimal marketPrice = default;
+    private AssetType _assetType = default;
+    private string _tickerSymbol = default;
+    private string _name = default;
+    private string _description = default;
+    private decimal _marketPrice = default;
 
-    private bool assetTypeSet = false;
-    private bool tickerSymbolSet = false;
-    private bool nameSet = false;
-    private bool descriptionSet = false;
-    private bool marketPriceSet = false;
+    private bool _assetTypeSet = false;
+    private bool _tickerSymbolSet = false;
+    private bool _nameSet = false;
+    private bool _descriptionSet = false;
+    private bool _marketPriceSet = false;
 
     public AssetFactory WithAssetType(AssetType assetType)
     {
-        this.assetType = assetType;
-        this.assetTypeSet = true;
+        _assetType = assetType;
+        _assetTypeSet = true;
         return this;
     }
 
     public AssetFactory WithTickerSymbol(string tickerSymbol)
     {
-        this.tickerSymbol = tickerSymbol;
-        this.tickerSymbolSet = true;
+        _tickerSymbol = tickerSymbol;
+        _tickerSymbolSet = true;
         return this;
     }
 
     public AssetFactory WithName(string name)
     {
-        this.name = name;
-        this.nameSet = true;
+        _name = name;
+        _nameSet = true;
         return this;
     }
 
     public AssetFactory WithDescription(string description)
     {
-        this.description = description;
-        this.descriptionSet = true;
+        _description = description;
+        _descriptionSet = true;
         return this;
     }
 
     public AssetFactory WithMarketPrice(decimal marketPrice)
     {
-        this.marketPrice = marketPrice;
-        this.marketPriceSet = true;
+        _marketPrice = marketPrice;
+        _marketPriceSet = true;
         return this;
     }
 
     public Asset Build()
     {
-        if (!this.assetTypeSet || !this.tickerSymbolSet || !this.nameSet || !this.descriptionSet || !this.marketPriceSet)
+        if (!_assetTypeSet || !_tickerSymbolSet || !_nameSet || !_descriptionSet || !_marketPriceSet)
         {
             throw new InvalidAssetException(
-                $"{nameof(this.assetType)}, " +
-                $"{nameof(this.tickerSymbol)}, " +
-                $"{nameof(this.name)}, " +
-                $"{nameof(this.description)} " +
-                $"and {nameof(this.marketPrice)} must have a value.");
+                $"{nameof(_assetType)}, " +
+                $"{nameof(_tickerSymbol)}, " +
+                $"{nameof(_name)}, " +
+                $"{nameof(_description)} " +
+                $"and {nameof(_marketPrice)} must have a value.");
         }
 
         return new Asset(
-            this.assetType,
-            this.tickerSymbol,
-            this.name,
-            this.description,
-            this.marketPrice);
+            _assetType,
+            _tickerSymbol,
+            _name,
+            _description,
+            _marketPrice);
     }
 }

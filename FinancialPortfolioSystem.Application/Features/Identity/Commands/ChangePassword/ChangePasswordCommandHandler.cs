@@ -5,20 +5,20 @@ namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.Change
 
 public class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, Result>
 {
-    private readonly ICurrentUser currentUser;
-    private readonly IIdentity identity;
+    private readonly ICurrentUser _currentUser;
+    private readonly IIdentity _identity;
 
     public ChangePasswordCommandHandler(
         ICurrentUser currentUser,
         IIdentity identity)
     {
-        this.currentUser = currentUser;
-        this.identity = identity;
+        _currentUser = currentUser;
+        _identity = identity;
     }
 
     public async Task<Result> HandleAsync(ChangePasswordCommand request, CancellationToken cancellationToken = default)
-        => await this.identity.ChangePassword(new ChangePasswordInputModel(
-            this.currentUser.UserId,
+        => await _identity.ChangePassword(new ChangePasswordInputModel(
+            _currentUser.UserId,
             request.CurrentPassword,
             request.NewPassword));
 }

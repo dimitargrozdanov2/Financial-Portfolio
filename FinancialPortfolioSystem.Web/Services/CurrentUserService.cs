@@ -15,8 +15,8 @@ public class CurrentUserService : ICurrentUser
             throw new InvalidOperationException("This request does not have an authenticated user.");
         }
 
-        this.UserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-        this.Roles = user.FindAll(ClaimTypes.Role).Select(x => x.Value).ToList();
+        UserId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+        Roles = user.FindAll(ClaimTypes.Role).Select(x => x.Value).ToList();
     }
 
     public string UserId { get; }

@@ -14,7 +14,7 @@ internal class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Res
 
     public async Task<Result> HandleAsync(CreateUserCommand request, CancellationToken cancellationToken = default)
     {
-        var result = await this._identity.Register(request);
+        var result = await _identity.Register(request);
 
         return result;
     }

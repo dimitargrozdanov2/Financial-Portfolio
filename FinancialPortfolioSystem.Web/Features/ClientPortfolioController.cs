@@ -24,7 +24,7 @@ public class ClientPortfolioController : ApiController
     [Route("buy")]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult> Buy(BuyClientAssetCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 
     /// <summary>
     /// Sells an asset from a client portfolio.
@@ -35,7 +35,7 @@ public class ClientPortfolioController : ApiController
     [Route("sell")]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult> Sell(SellClientAssetCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 
     /// <summary>
     /// Shows list of holdings with total value
@@ -45,7 +45,7 @@ public class ClientPortfolioController : ApiController
     [HttpGet]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult<AllClientAssetsOutputModel>> Holdings([FromQuery] GetPortfolioHoldingsQuery query)
-         => await this.SendAsync(query);
+         => await SendAsync(query);
 
 
     /// <summary>
@@ -57,5 +57,5 @@ public class ClientPortfolioController : ApiController
     [Route("metrics")]
     [Authorize(Roles = "Client")]
     public async Task<ActionResult<PortfolioMetricsOutputModel>> Metrics([FromQuery] GetPortfolioMetricsQuery query)
-        => await this.SendAsync(query);
+        => await SendAsync(query);
 }

@@ -5,19 +5,19 @@ namespace FinancialPortfolioSystem.Application.Features.Identity.Commands.LoginU
 
 public class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, Result<LoginOutputModel>>
 {
-    private readonly IIdentity identity;
+    private readonly IIdentity _identity;
 
     public LoginUserCommandHandler(
         IIdentity identity)
     {
-        this.identity = identity;
+        _identity = identity;
     }
 
     public async Task<Result<LoginOutputModel>> HandleAsync(
         LoginUserCommand request,
         CancellationToken cancellationToken)
     {
-        var result = await this.identity.Login(request);
+        var result = await _identity.Login(request);
 
         if (!result.Succeeded)
         {

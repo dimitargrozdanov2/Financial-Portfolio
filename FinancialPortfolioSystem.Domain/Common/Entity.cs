@@ -17,17 +17,17 @@ public abstract class Entity<TId>
             return true;
         }
 
-        if (this.GetType() != other.GetType())
+        if (GetType() != other.GetType())
         {
             return false;
         }
 
-        if (this.Id.Equals(default) || other.Id.Equals(default))
+        if (Id.Equals(default) || other.Id.Equals(default))
         {
             return false;
         }
 
-        return this.Id.Equals(other.Id);
+        return Id.Equals(other.Id);
     }
 
     public static bool operator ==(Entity<TId> first, Entity<TId> second)
@@ -47,5 +47,5 @@ public abstract class Entity<TId>
 
     public static bool operator !=(Entity<TId> first, Entity<TId> second) => !(first == second);
 
-    public override int GetHashCode() => (this.GetType().ToString() + this.Id).GetHashCode();
+    public override int GetHashCode() => (GetType().ToString() + Id).GetHashCode();
 }

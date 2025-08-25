@@ -17,13 +17,13 @@ public class IdentityController : ApiController
     [Route(nameof(Register))]
     public async Task<ActionResult> Register(
         CreateUserCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 
     [HttpPost]
     [Route(nameof(Login))]
     public async Task<ActionResult<LoginOutputModel>> Login(
         LoginUserCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 
 
     [HttpPut]
@@ -31,5 +31,5 @@ public class IdentityController : ApiController
     [Route(nameof(ChangePassword))]
     public async Task<ActionResult> ChangePassword(
         ChangePasswordCommand command)
-        => await this.SendAsync(command);
+        => await SendAsync(command);
 }

@@ -28,7 +28,7 @@ public class BuyClientAssetCommandHandler : ICommandHandler<BuyClientAssetComman
 
     public async Task<Result> HandleAsync(BuyClientAssetCommand request, CancellationToken cancellationToken = default)
     {
-        var asset = await this._assetRepository.GetById(request.AssetId, cancellationToken);
+        var asset = await _assetRepository.GetById(request.AssetId, cancellationToken);
 
         if (asset == null)
         {

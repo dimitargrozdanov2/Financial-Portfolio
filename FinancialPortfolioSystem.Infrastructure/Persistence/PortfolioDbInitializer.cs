@@ -6,40 +6,40 @@ namespace FinancialPortfolioSystem.Infrastructure.Persistence;
 
 internal class PortfolioDbInitializer : IPortfolioDbInitializer
 {
-    private readonly FinancePortfolioDbContext db;
-    private readonly IEnumerable<IInitialData> initialDataProviders;
+    private readonly FinancePortfolioDbContext _db;
+    private readonly IEnumerable<IInitialData> _initialDataProviders;
 
     public PortfolioDbInitializer(
         FinancePortfolioDbContext db, IEnumerable<IInitialData> initialDataProviders)
     {
-        this.db = db;
-        this.initialDataProviders = initialDataProviders;
+        _db = db;
+        _initialDataProviders = initialDataProviders;
     }
 
     public void Initialize()
     {
-        this.db.Database.Migrate();
+        _db.Database.Migrate();
 
-        foreach (var initialDataProvider in this.initialDataProviders)
+        foreach (var initialDataProvider in _initialDataProviders)
         {
-            if (this.IsDataSetEmpty(initialDataProvider.EntityType))
+            if (IsDataSetEmpty(initialDataProvider.EntityType))
             {
                 var data = initialDataProvider.SeedData();
 
                 foreach (var entity in data)
                 {
-                    this.db.Add(entity);
+                    _db.Add(entity);
                 }
             }
         }
 
-        this.db.SaveChanges();
+        _db.SaveChanges();
     }
 
     private bool IsDataSetEmpty(Type type)
     {
-        var setMethod = this.GetType()
-            .GetMethod(nameof(this.GetSet), BindingFlags.Instance | BindingFlags.NonPublic)!
+        var setMethod = GetType()
+            .GetMethod(nameof(GetSet), BindingFlags.Instance | BindingFlags.NonPublic)!
             .MakeGenericMethod(type);
 
         var set = setMethod.Invoke(this, Array.Empty<object>());
@@ -56,5 +56,5 @@ internal class PortfolioDbInitializer : IPortfolioDbInitializer
 
     private DbSet<TEntity> GetSet<TEntity>()
         where TEntity : class
-        => this.db.Set<TEntity>();
+        => _db.Set<TEntity>();
 }

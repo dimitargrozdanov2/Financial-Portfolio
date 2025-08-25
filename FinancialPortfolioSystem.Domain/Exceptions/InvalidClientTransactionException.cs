@@ -6,5 +6,5 @@ public class InvalidClientTransactionException : BaseDomainException
     {
     }
 
-    public InvalidClientTransactionException(string message) => this.Error = message;
+    public InvalidClientTransactionException(string message) => Error = message;
 }

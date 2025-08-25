@@ -2,20 +2,20 @@
 
 public class Result
 {
-    private readonly List<string> errors;
+    private readonly List<string> _errors;
 
     internal Result(bool succeeded, List<string> errors)
     {
-        this.Succeeded = succeeded;
-        this.errors = errors;
+        Succeeded = succeeded;
+        _errors = errors;
     }
 
     public bool Succeeded { get; }
 
     public List<string> Errors
-        => this.Succeeded
+        => Succeeded
             ? new List<string>()
-            : this.errors;
+            : _errors;
 
     public static Result Success
         => new Result(true, new List<string>());
@@ -38,17 +38,17 @@ public class Result
 
 public class Result<TData> : Result
 {
-    private readonly TData data;
+    private readonly TData _data;
 
     private Result(bool succeeded, TData data, List<string> errors)
         : base(succeeded, errors)
-        => this.data = data;
+        => _data = data;
 
     public TData Data
-        => this.Succeeded
-            ? this.data
+        => Succeeded
+            ? _data
             : throw new InvalidOperationException(
-                $"{nameof(this.Data)} is not available with a failed result. Use {this.Errors} instead.");
+                $"{nameof(Data)} is not available with a failed result. Use {Errors} instead.");
 
     public static Result<TData> SuccessWith(TData data)
         => new Result<TData>(true, data, new List<string>());

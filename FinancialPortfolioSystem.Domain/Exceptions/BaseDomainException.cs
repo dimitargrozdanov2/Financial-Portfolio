@@ -2,11 +2,11 @@
 
 public abstract class BaseDomainException : Exception
 {
-    private string error;
+    private string _error;
 
     public string Error
     {
-        get => this.error ?? base.Message;
-        set => this.error = value;
+        get => _error ?? base.Message;
+        set => _error = value;
     }
 }

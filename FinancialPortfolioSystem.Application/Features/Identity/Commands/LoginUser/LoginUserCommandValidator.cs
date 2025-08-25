@@ -6,10 +6,10 @@ internal class LoginUserCommandValidator : AbstractValidator<LoginUserCommand>
 {
     public LoginUserCommandValidator()
     {
-        this.RuleFor(u => u.Email)
+        RuleFor(u => u.Email)
             .NotEmpty();
 
-        this.RuleFor(u => u.Password)
+        RuleFor(u => u.Password)
             .NotEmpty();
     }
 }
