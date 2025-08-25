@@ -181,7 +181,7 @@ In the future, those secrets may be moved to a safer storage - such as Azure Key
 
 > The only endpoints that do not require Authorization are for registering a user and logging.
 
-## 15) Extension Points & Roadmap
+## 14) Extension Points & Roadmap
 • Implement integration and unit tests.
 •	Swap mock market data provider with a real API adapter.
 •	Add outbox pattern for reliable domain event publishing.
@@ -190,7 +190,7 @@ In the future, those secrets may be moved to a safer storage - such as Azure Key
 •	Implement export (CSV/PDF) and notifications.
 
 
-## 16) Coding Conventions (abridged)
+## 15) Coding Conventions (abridged)
 •	Use primary constructors
 •	Keep controllers ≤ 50 LOC; no business logic in controllers.
 •	One handler per command/query and a separate validation class if needed ; do not share mutable state.
@@ -198,9 +198,9 @@ In the future, those secrets may be moved to a safer storage - such as Azure Key
 • Communicate only with aggregate roots, use Factories and Repositories as ACL(Anti Corruption Layer)
 •	Use Utc everywhere (persisted as UTC in DB).
 
-## 17) Appendix — Reference DI registration (pseudo code)
-// Startup project
-public static class DependencyInjection
+## 16) Appendix — Reference DI registration example
+// Infrastructure project
+public static class InfrastructureConfiguration
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
@@ -211,20 +211,75 @@ public static class DependencyInjection
     }
 
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration cfg)
+        => services
+            .AddDatabase(configuration)
+            .AddRepositories()
+            .AddIdentity(configuration);
+            
+    private static IServiceCollection AddDatabase(
+        this IServiceCollection services,
+        IConfiguration configuration)
+        => services
+            .AddDbContext<FinancePortfolioDbContext>(options => options
+                .UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    sqlServer => sqlServer
+                        .MigrationsAssembly(typeof(FinancePortfolioDbContext)
+                            .Assembly.FullName)))
+            .AddTransient<IPortfolioDbInitializer, PortfolioDbInitializer>();
+
+    private static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+        => services
+            .AddTransient<IAssetRepository, AssetRepository>()
+            .AddTransient<IClientPortfolioRepository, ClientPortfolioRepository>();
+
+    private static IServiceCollection AddIdentity(
+               this IServiceCollection services,
+               IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(o =>
-            o.UseSqlServer(cfg.GetConnectionString("Default")));
-
-        services.AddIdentityCore<AppUser>()
+        services
+            .AddIdentityCore<User>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+                options.User.RequireUniqueEmail = true;
+            })
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>();
-
-        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
-        services.AddScoped<IAssetRepository, AssetRepository>();
-        services.AddScoped<IMarketDataService, MockMarketDataService>();
-        services.AddTransient<IClock, SystemClock>();
-
+            .AddEntityFrameworkStores<FinancePortfolioDbContext>();
+    
+        var secret = configuration
+                       .GetSection(nameof(ApplicationSettings))
+                       .GetValue<string>(nameof(ApplicationSettings.Secret));
+    
+        var key = Encoding.ASCII.GetBytes(secret);
+    
+        services
+            .AddAuthentication(authentication =>
+            {
+                authentication.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                authentication.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.RequireHttpsMetadata = false;
+                bearer.SaveToken = true;
+                bearer.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+    
+        services.AddTransient<IIdentity, IdentityService>();
         return services;
     }
 }
