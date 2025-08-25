@@ -43,6 +43,14 @@ Add/remove assets
 
 Execute buy/sell transactions
 
+## 📐 Architecture
+
+For a detailed explanation of the system design, including diagrams and data model, see the [Architecture Document](./Architecture.md).
+
+### System Context Overview
+<img width="871" height="248" alt="image" src="https://github.com/user-attachments/assets/d7eb85e7-b4d1-401b-a1cb-ff43a642e727" />
+
+
 ## 🗄 Database Schema
 
 The database schema was designed with Entity Framework Core Code First and SQL Server. It ensures separation of concerns between users, portfolios, assets, and transactions.
