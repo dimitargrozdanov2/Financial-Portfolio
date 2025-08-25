@@ -15,8 +15,8 @@ internal class AssetRepository(IMapper mapper, FinancePortfolioDbContext db) : I
     public async Task<AllAssetsOutputModel> GetAllAsync(Expression<Func<Asset,bool>> func = null, CancellationToken cancellationToken = default)
     {
         var dataModels = func is null
-            ? await _db.Assets.ToListAsync(cancellationToken)
-            : await _db.Assets.Where(func).ToListAsync(cancellationToken);
+            ? await _db.Assets.AsNoTracking().ToListAsync(cancellationToken)
+            : await _db.Assets.AsNoTracking().Where(func).ToListAsync(cancellationToken);
         var items = _mapper.Map<List<AssetDetailedOutputModel>>(dataModels);
         return new AllAssetsOutputModel
         {
