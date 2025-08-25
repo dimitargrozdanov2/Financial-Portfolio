@@ -48,7 +48,8 @@ Execute buy/sell transactions
 The database schema was designed with Entity Framework Core Code First and SQL Server. It ensures separation of concerns between users, portfolios, assets, and transactions.
 
 ### Database Diagram
-<img width="883" height="1441" alt="image" src="https://github.com/user-attachments/assets/ef9e781e-fc9d-4384-8b6e-1f642b3e84ed" />
+<img width="552" height="431" alt="image" src="https://github.com/user-attachments/assets/c4e8b4d7-1acf-4c9f-b970-987d35c426b8" />
+
 
 ###  Main Tables
 
@@ -99,7 +100,8 @@ npm run dev
 
 # Further information
 Automapper and Mediator are going commercial : https://www.jimmybogard.com/automapper-and-mediatr-going-commercial/
-For that reason the alternatives in the project are
+
+For that reason  alternatives libraries were used in the project are
 * Mapster : https://medium.com/@eslamhelmy523/%EF%B8%8F-automapper-goes-commercial-heres-your-best-alternative-6333f38ac46a
 * Litebus:  https://medium.com/@litenova/litebus-why-i-built-a-cqs-first-alternative-to-mediatr-52b9d8f7932f
 
@@ -108,7 +110,7 @@ Litebus Mediator was also implemented using a Façade to make it more generic si
 The project was implemented using DDD and Clean Architecture:
 <img width="788" height="1377" alt="image" src="https://github.com/user-attachments/assets/4aa496a3-c2fc-4ba9-8875-d349e10456f3" />
 
-In order to cover them, a Startup project was added. Otherwise Presentation will have to refer Application and Infrastructure. 
+In order to fullfill this diagram, a Startup project was added. Otherwise Presentation will have to refer Application and Infrastructure. 
 Presentation layer has to refer only to Application layer as per the diagram above.
 
 # 📌 Future Improvements
