@@ -50,6 +50,8 @@ internal class ExceptionHandlerMiddleware
             case BaseDomainException:
                 code = HttpStatusCode.BadRequest;
                 break;
+
+
         }
 
         context.Response.ContentType = "application/json";

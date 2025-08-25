@@ -1,4 +1,5 @@
-﻿using FinancialPortfolioSystem.Domain.Models.Client;
+﻿using FinancialPortfolioSystem.Domain.Models.Assets;
+using FinancialPortfolioSystem.Domain.Models.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,12 @@ internal class ClientTransactionConfiguration : IEntityTypeConfiguration<ClientT
         builder
             .Property(ct => ct.AssetId)
             .IsRequired();
+
+        builder
+            .HasOne<Asset>()
+            .WithMany()
+            .HasForeignKey(ca => ca.AssetId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(a => a.Type)
             .HasConversion(
