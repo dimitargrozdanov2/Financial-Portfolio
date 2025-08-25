@@ -47,7 +47,7 @@ No framework dependencies.
 
 * **Client** — identity of the portfolio owner; owns **Portfolio**.
 * **Portfolio** (aggregate root) — collection of **Positions** and **Transactions**; exposes operations `Buy`, `Sell`, `Reprice`, `Revalue` enforcing invariants.
-* **Asset** — canonical instrument reference (Ticker, Name, Type: Stock/Bond/ETF).
+* **Asset** — (aggregate root) canonical instrument reference (Ticker, Name, Type: Stock/Bond/ETF).
 * **Position** (ClientAsset) — quantity, average cost, realized/unrealized P\&L.
 * **Transaction** — buy/sell with timestamp, price, fees (append‑only ledger).
 
