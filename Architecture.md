@@ -162,7 +162,8 @@ Folder proposal:
 
 ## 12) Configuration & Environments
 
-* `appsettings.json` with  connection string and application secret used in JWT token generation
+* `appsettings.json` with  connection string and application secret used in JWT token generation. Also admin username and password are kept there.
+In the future, those secrets may be moved to a safer storage - such as Azure Key Vault.
 
 ## 13) API Surface (initial)
 
