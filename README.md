@@ -88,7 +88,7 @@ cd Financial-Portfolio
 
 3. Update appsettings.json with your database connection string.
 
-Database will be created automatically.
+Database will be created automatically once the project is started.
 
 4. Start the backend:
 dotnet run or from Visual Studio
